@@ -2,9 +2,63 @@
 
 A comprehensive web-based e-ticketing platform for mountain climbing and hiking activities, built with Laravel 10. This system provides seamless booking management, multi-language support, and integrated payment processing for outdoor adventure enthusiasts.
 
+<div align="center">
+
 [![Laravel](https://img.shields.io/badge/Laravel-10.x-red.svg)](https://laravel.com)
 [![PHP](https://img.shields.io/badge/PHP-8.1+-blue.svg)](https://php.net)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+</div>
+
+---
+
+## 📸 Screenshots
+
+### 🌐 Customer Web Interface
+
+<table align="center">
+<tr>
+<td align="center" width="32%">
+  <img src="https://raw.githubusercontent.com/fairuzjs/gosummit-laravel/main/public/images/homepage.jpg" width="100%" style="border-radius: 8px; margin: 0 5px;" />
+  <br/><sub><b>🏠 Homepage</b></sub>
+  <br/><sub>Hero section with featured mountains</sub>
+</td>
+<td align="center" width="32%">
+  <img src="https://raw.githubusercontent.com/fairuzjs/gosummit-laravel/main/public/images/popularpage.jpg" width="100%" style="border-radius: 8px; margin: 0 5px;" />
+  <br/><sub><b>⭐ Popular Destinations</b></sub>
+  <br/><sub>Curated mountain selections</sub>
+</td>
+<td align="center" width="32%">
+  <img src="https://raw.githubusercontent.com/fairuzjs/gosummit-laravel/main/public/images/explorepage.jpg" width="100%" style="border-radius: 8px; margin: 0 5px;" />
+  <br/><sub><b>🔍 Explore & Search</b></sub>
+  <br/><sub>Advanced search functionality</sub>
+</td>
+</tr>
+</table>
+
+### 👨‍💼 Admin Dashboard
+
+<table align="center">
+<tr>
+<td align="center" width="32%">
+  <img src="https://raw.githubusercontent.com/fairuzjs/gosummit-laravel/main/public/images/dbadmin.jpg" width="100%" style="border-radius: 8px; margin: 0 5px;" />
+  <br/><sub><b>📊 Analytics Dashboard</b></sub>
+  <br/><sub>Revenue & booking statistics</sub>
+</td>
+<td align="center" width="32%">
+  <img src="https://raw.githubusercontent.com/fairuzjs/gosummit-laravel/main/public/images/managemt.jpg" width="100%" style="border-radius: 8px; margin: 0 5px;" />
+  <br/><sub><b>⛰️ Mountain Management</b></sub>
+  <br/><sub>CRUD operations for mountains</sub>
+</td>
+<td align="center" width="32%">
+  <img src="https://raw.githubusercontent.com/fairuzjs/gosummit-laravel/main/public/images/vcmanagejpg" width="100%" style="border-radius: 8px; margin: 0 5px;" />
+  <br/><sub><b>📋 Vouchers Management</b></sub>
+  <br/><sub>View & manage all vouchers</sub>
+</td>
+</tr>
+</table>
+
+---
 
 ## 📋 Table of Contents
 
@@ -61,6 +115,49 @@ A comprehensive web-based e-ticketing platform for mountain climbing and hiking 
 - **Image Galleries** - Mountain photo galleries with lightbox
 
 ## 🛠️ Tech Stack
+
+<div align="center">
+
+<table>
+<tr>
+<td align="center" width="96">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-plain.svg" width="48" height="48" alt="Laravel" />
+<br>Laravel
+</td>
+<td align="center" width="96">
+<img src="https://raw.githubusercontent.com/livewire/livewire/main/art/logo.svg" width="48" height="48" alt="Livewire" />
+<br>Livewire
+</td>
+<td align="center" width="96">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg" width="48" height="48" alt="TailwindCSS" />
+<br>TailwindCSS
+</td>
+<td align="center" width="96">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" width="48" height="48" alt="MySQL" />
+<br>MySQL
+</td>
+<td align="center" width="96">
+<img src="https://raw.githubusercontent.com/gilbarbara/logos/main/logos/midtrans.svg" width="48" height="48" alt="Midtrans" />
+<br>Midtrans
+</td>
+<td align="center" width="96">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/alpinejs/alpinejs-original.svg" width="48" height="48" alt="Alpine.js" />
+<br>Alpine.js
+</td>
+<td align="center" width="96">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" width="48" height="48" alt="PHP" />
+<br>PHP
+</td>
+<td align="center" width="96">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" width="48" height="48" alt="JavaScript" />
+<br>JavaScript
+</td>
+</tr>
+</table>
+
+</div>
+
+---
 
 ### Backend
 - **Framework:** Laravel 10.x
