@@ -51,7 +51,7 @@ A comprehensive web-based e-ticketing platform for mountain climbing and hiking 
   <br/><sub>CRUD operations for mountains</sub>
 </td>
 <td align="center" width="32%">
-  <img src="https://raw.githubusercontent.com/fairuzjs/gosummit-laravel/main/public/images/vcmanagejpg" width="100%" style="border-radius: 8px; margin: 0 5px;" />
+  <img src="https://raw.githubusercontent.com/fairuzjs/gosummit-laravel/main/public/images/vcmanage.jpg" width="100%" style="border-radius: 8px; margin: 0 5px;" />
   <br/><sub><b>📋 Vouchers Management</b></sub>
   <br/><sub>View & manage all vouchers</sub>
 </td>
