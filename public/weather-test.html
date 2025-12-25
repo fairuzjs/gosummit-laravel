@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather API Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .test { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        .success { background: #d4edda; }
+        .error { background: #f8d7da; }
+        pre { background: #f5f5f5; padding: 10px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Weather API Diagnostic Test</h1>
+    
+    <div id="results"></div>
+    
+    <script>
+        const results = document.getElementById('results');
+        
+        async function testAPI(name, url) {
+            const div = document.createElement('div');
+            div.className = 'test';
+            div.innerHTML = `<h3>${name}</h3><p>Testing: ${url}</p><p>Loading...</p>`;
+            results.appendChild(div);
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                div.className = 'test ' + (response.ok ? 'success' : 'error');
+                div.innerHTML = `
+                    <h3>${name}</h3>
+                    <p>URL: ${url}</p>
+                    <p>Status: ${response.status} ${response.statusText}</p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                div.className = 'test error';
+                div.innerHTML = `
+                    <h3>${name}</h3>
+                    <p>URL: ${url}</p>
+                    <p>Error: ${error.message}</p>
+                `;
+            }
+        }
+        
+        // Run tests
+        (async () => {
+            await testAPI('Test 1: Search "bandung"', '/api/weather/search?q=bandung');
+            await testAPI('Test 2: Search "jakarta"', '/api/weather/search?q=jakarta');
+            await testAPI('Test 3: Weather by coords (Bandung)', '/api/weather/current?lat=-6.9175&lon=107.6191');
+        })();
+    </script>
+</body>
+</html>
