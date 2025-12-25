@@ -1,0 +1,4 @@
+# This file ensures the screenshots directory is tracked by Git
+# Place your screenshot images here:
+# - user-*.png (for user interface screenshots)
+# - admin-*.png (for admin interface screenshots)

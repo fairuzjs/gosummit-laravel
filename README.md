@@ -77,6 +77,64 @@ GoSummit adalah sistem pemesanan tiket pendakian gunung berbasis web yang dibang
 - **OAuth:** Laravel Socialite
 - **Build Tools:** Vite
 
+## 📸 Screenshots
+
+### 🌟 User Interface
+
+<div align="center">
+
+#### Homepage - Landing Page
+![Homepage](docs/screenshots/homepage.jpg)
+*Halaman utama dengan hero section, pencarian gunung, dan featured mountains*
+
+---
+
+#### Explore Mountains
+![Explore Page](docs/screenshots/explorepage.jpg)
+*Halaman eksplorasi dengan filter dan daftar gunung lengkap*
+
+---
+
+#### Popular Mountains
+![Popular Mountains](docs/screenshots/popularpage.jpg)
+*Gunung-gunung populer dengan rating dan review*
+
+---
+
+#### News & Articles
+![News Page](docs/screenshots/newspage.jpg)
+*Berita dan artikel seputar pendakian gunung*
+
+</div>
+
+### 🔧 Admin Dashboard
+
+<div align="center">
+
+#### Admin Dashboard & Analytics
+![Admin Dashboard](docs/screenshots/dbadmin.jpg)
+*Dashboard admin dengan statistik, grafik, dan monitoring real-time*
+
+---
+
+#### Content Management
+![Content Management](docs/screenshots/managemt.jpg)
+*Manajemen gunung, jalur pendakian, dan kuota*
+
+---
+
+#### Voucher Management
+![Voucher Management](docs/screenshots/vcmanage.jpg)
+*Sistem manajemen voucher dan diskon*
+
+</div>
+
+---
+
+<div align="center">
+  <p><i>💡 Semua screenshot menampilkan desain responsive yang optimal untuk desktop, tablet, dan mobile</i></p>
+</div>
+
 ## 📋 Requirements
 
 - PHP >= 8.2
