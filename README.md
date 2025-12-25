@@ -81,53 +81,59 @@ GoSummit adalah sistem pemesanan tiket pendakian gunung berbasis web yang dibang
 
 ### 🌟 User Interface
 
-<div align="center">
-
-#### Homepage - Landing Page
-![Homepage](docs/screenshots/homepage.jpg)
-*Halaman utama dengan hero section, pencarian gunung, dan featured mountains*
-
----
-
-#### Explore Mountains
-![Explore Page](docs/screenshots/explorepage.jpg)
-*Halaman eksplorasi dengan filter dan daftar gunung lengkap*
-
----
-
-#### Popular Mountains
-![Popular Mountains](docs/screenshots/popularpage.jpg)
-*Gunung-gunung populer dengan rating dan review*
-
----
-
-#### News & Articles
-![News Page](docs/screenshots/newspage.jpg)
-*Berita dan artikel seputar pendakian gunung*
-
-</div>
+<table>
+  <tr>
+    <td width="33%" align="center">
+      <img src="docs/screenshots/homepage.jpg" alt="Homepage" width="100%"/>
+      <br/>
+      <strong>Homepage</strong>
+      <br/>
+      <em>Landing page dengan hero section dan featured mountains</em>
+    </td>
+    <td width="33%" align="center">
+      <img src="docs/screenshots/explorepage.jpg" alt="Explore Mountains" width="100%"/>
+      <br/>
+      <strong>Explore Mountains</strong>
+      <br/>
+      <em>Halaman eksplorasi dengan filter lengkap</em>
+    </td>
+    <td width="33%" align="center">
+      <img src="docs/screenshots/newspage.jpg" alt="News & Articles" width="100%"/>
+      <br/>
+      <strong>News & Articles</strong>
+      <br/>
+      <em>Berita dan artikel pendakian</em>
+    </td>
+  </tr>
+</table>
 
 ### 🔧 Admin Dashboard
 
-<div align="center">
-
-#### Admin Dashboard & Analytics
-![Admin Dashboard](docs/screenshots/dbadmin.jpg)
-*Dashboard admin dengan statistik, grafik, dan monitoring real-time*
-
----
-
-#### Content Management
-![Content Management](docs/screenshots/managemt.jpg)
-*Manajemen gunung, jalur pendakian, dan kuota*
-
----
-
-#### Voucher Management
-![Voucher Management](docs/screenshots/vcmanage.jpg)
-*Sistem manajemen voucher dan diskon*
-
-</div>
+<table>
+  <tr>
+    <td width="33%" align="center">
+      <img src="docs/screenshots/dbadmin.jpg" alt="Admin Dashboard" width="100%"/>
+      <br/>
+      <strong>Dashboard & Analytics</strong>
+      <br/>
+      <em>Statistik dan monitoring real-time</em>
+    </td>
+    <td width="33%" align="center">
+      <img src="docs/screenshots/managemt.jpg" alt="Content Management" width="100%"/>
+      <br/>
+      <strong>Content Management</strong>
+      <br/>
+      <em>Manajemen gunung dan jalur</em>
+    </td>
+    <td width="33%" align="center">
+      <img src="docs/screenshots/vcmanage.jpg" alt="Voucher Management" width="100%"/>
+      <br/>
+      <strong>Voucher Management</strong>
+      <br/>
+      <em>Sistem voucher dan diskon</em>
+    </td>
+  </tr>
+</table>
 
 ---
 
