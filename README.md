@@ -135,30 +135,30 @@ GoSummit adalah sistem pemesanan tiket pendakian gunung berbasis web yang dibang
   </tr>
 </table>
 
-### 🔧 Admin Dashboard
+### ✅ Validator Dashboard
 
 <table>
   <tr>
     <td width="33%" align="center">
-      <img src="docs/screenshots/dbadmin.jpg" alt="Admin Dashboard" width="100%"/>
+      <img src="docs/screenshots/validatorhome.jpg" alt="Validator Dashboard" width="100%"/>
       <br/>
-      <strong>Dashboard & Analytics</strong>
+      <strong>Validator Dashboard</strong>
       <br/>
-      <em>Statistik dan monitoring real-time</em>
+      <em>Halaman Validator responsive</em>
     </td>
     <td width="33%" align="center">
-      <img src="docs/screenshots/managemt.jpg" alt="Content Management" width="100%"/>
+      <img src="docs/screenshots/recentpage.jpg" alt="Recent Bookings" width="100%"/>
       <br/>
-      <strong>Content Management</strong>
+      <strong>Recent Bookings</strong>
       <br/>
-      <em>Manajemen gunung dan jalur</em>
+      <em>Manajemen booking terbaru</em>
     </td>
     <td width="33%" align="center">
-      <img src="docs/screenshots/vcmanage.jpg" alt="Voucher Management" width="100%"/>
+      <img src="docs/screenshots/scanerpage.jpg" alt="Scanner Page" width="100%"/>
       <br/>
-      <strong>Voucher Management</strong>
+      <strong>Scanner Page</strong>
       <br/>
-      <em>Sistem voucher dan diskon</em>
+      <em>Scan dan validasi tiket booking</em>
     </td>
   </tr>
 </table>
