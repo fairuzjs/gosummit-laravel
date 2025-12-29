@@ -197,7 +197,7 @@ Route::middleware(['auth:admin', 'can:admin'])->prefix('admin')->name('admin.')-
 
 
 // --- RUTE PANEL VALIDATOR ---
-Route::middleware(['auth', 'can:validator'])->prefix('validator')->name('validator.')->group(function () {
+Route::middleware(['auth:validator', 'can:validator'])->prefix('validator')->name('validator.')->group(function () {
     
     Route::get('/dashboard', function() {
         return redirect()->route('validator.bookings.index');
@@ -205,6 +205,10 @@ Route::middleware(['auth', 'can:validator'])->prefix('validator')->name('validat
 
     Route::get('/bookings', [App\Http\Controllers\Validator\BookingController::class, 'index'])->name('bookings.index');
     Route::patch('/bookings/{booking}/check-in', [App\Http\Controllers\Validator\BookingController::class, 'checkIn'])->name('bookings.checkIn');
+    
+    // QR Code Scanner Routes
+    Route::get('/scanner', [App\Http\Controllers\Validator\BookingController::class, 'scanner'])->name('bookings.scanner');
+    Route::post('/scan-check-in', [App\Http\Controllers\Validator\BookingController::class, 'scanCheckIn'])->name('bookings.scanCheckIn');
 });
 
 
@@ -214,3 +218,5 @@ Route::post('/midtrans/webhook', [PaymentController::class, 'webhook'])->name('m
 // --- RUTE AUTH ---
 require __DIR__.'/auth.php';
 require __DIR__.'/admin-auth.php';
+require __DIR__.'/validator-auth.php';
+

@@ -153,7 +153,8 @@
             border: 2px solid #e5e7eb;
         }
         
-        .qr-box img {
+        .qr-box img,
+        .qr-box svg {
             display: block;
             width: 160px;
             height: 160px;
@@ -291,7 +292,7 @@
             <!-- QR Code -->
             <div class="qr-section">
                 <div class="qr-box">
-                    <img src="data:image/png;base64,{!! base64_encode(QrCode::format('png')->size(160)->margin(0)->generate($booking->booking_code)) !!}" alt="QR Code">
+                    {!! QrCode::size(160)->margin(0)->generate($booking->booking_code) !!}
                 </div>
                 <div class="qr-instruction">
                     <span class="qr-icon"></span>
