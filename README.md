@@ -135,6 +135,34 @@ GoSummit adalah sistem pemesanan tiket pendakian gunung berbasis web yang dibang
   </tr>
 </table>
 
+### 🔧 Admin Dashboard
+
+<table>
+  <tr>
+    <td width="33%" align="center">
+      <img src="docs/screenshots/dbadmin.jpg" alt="Admin Dashboard" width="100%"/>
+      <br/>
+      <strong>Dashboard & Analytics</strong>
+      <br/>
+      <em>Statistik dan monitoring real-time</em>
+    </td>
+    <td width="33%" align="center">
+      <img src="docs/screenshots/managemt.jpg" alt="Content Management" width="100%"/>
+      <br/>
+      <strong>Content Management</strong>
+      <br/>
+      <em>Manajemen gunung dan jalur</em>
+    </td>
+    <td width="33%" align="center">
+      <img src="docs/screenshots/vcmanage.jpg" alt="Voucher Management" width="100%"/>
+      <br/>
+      <strong>Voucher Management</strong>
+      <br/>
+      <em>Sistem voucher dan diskon</em>
+    </td>
+  </tr>
+</table>
+
 ---
 
 <div align="center">
