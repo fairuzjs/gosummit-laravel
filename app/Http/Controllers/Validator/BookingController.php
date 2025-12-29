@@ -74,7 +74,7 @@ class BookingController extends Controller
         if (!$booking) {
             return response()->json([
                 'success' => false,
-                'message' => '❌ Booking tidak ditemukan! Kode: ' . $request->booking_code
+                'message' => 'Booking tidak ditemukan! Kode: ' . $request->booking_code
             ], 404);
         }
 
@@ -89,7 +89,7 @@ class BookingController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => "⚠️ Booking {$booking->booking_code} tidak bisa di-check-in. Status: {$statusText}"
+                'message' => "Booking {$booking->booking_code} tidak bisa di-check-in. Status: {$statusText}"
             ], 400);
         }
 
@@ -102,7 +102,7 @@ class BookingController extends Controller
         if ($daysDifference < -30 || $daysDifference > 7) {
             return response()->json([
                 'success' => false,
-                'message' => "⚠️ Tanggal check-in tidak sesuai. Booking untuk: " . $checkInDate->format('d M Y')
+                'message' => "Tanggal check-in tidak sesuai. Booking untuk: " . $checkInDate->format('d M Y')
             ], 400);
         }
 
@@ -114,7 +114,7 @@ class BookingController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => "✅ Check-in berhasil untuk {$booking->booking_code}!",
+            'message' => "Check-in berhasil untuk {$booking->booking_code}!",
             'booking' => [
                 'booking_code' => $booking->booking_code,
                 'mountain' => $booking->mountain->name,

@@ -9,6 +9,21 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        .animate-slide-in {
+            animation: slideInRight 0.4s ease-out;
+        }
+    </style>
     @stack('styles')
 </head>
 <body class="font-sans antialiased bg-gray-50" x-data="{ mobileMenuOpen: false, profileDropdownOpen: false }">
@@ -153,45 +168,57 @@
         <main class="flex-1 p-4 sm:p-6 bg-gray-50">
             <div class="max-w-7xl mx-auto">
                 
-                {{-- Success Notification --}}
-                @if (session('success'))
-                    <div id="notification" class="mb-6 bg-gradient-to-r from-green-50 to-green-100 border-l-4 border-green-500 text-green-800 p-4 rounded-xl shadow-md" role="alert">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center mr-3">
-                                <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="font-bold text-lg">Success!</p>
-                                <p>{{ session('success') }}</p>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-
-                {{-- Error Notification --}}
-                @if (session('error'))
-                    <div id="notification" class="mb-6 bg-gradient-to-r from-red-50 to-red-100 border-l-4 border-red-500 text-red-800 p-4 rounded-xl shadow-md" role="alert">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center mr-3">
-                                <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="font-bold text-lg">Error!</p>
-                                <p>{{ session('error') }}</p>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-
                 {{-- Main Content --}}
                 @yield('content')
 
             </div>
         </main>
+
+        {{-- Success Notification (Floating) --}}
+        @if (session('success'))
+            <div id="notification" class="fixed top-20 right-4 z-50 max-w-sm w-full px-4 sm:px-0">
+                <div class="bg-white border-l-4 border-green-500 rounded-lg shadow-lg backdrop-blur-sm animate-slide-in">
+                    <div class="flex items-start gap-3 p-3">
+                        <div class="bg-green-100 rounded-full p-1.5 flex-shrink-0">
+                            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="font-semibold text-sm text-gray-800 leading-tight">{{ session('success') }}</p>
+                        </div>
+                        <button onclick="document.getElementById('notification').remove()" class="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        {{-- Error Notification (Floating) --}}
+        @if (session('error'))
+            <div id="notification" class="fixed top-20 right-4 z-50 max-w-sm w-full px-4 sm:px-0">
+                <div class="bg-white border-l-4 border-red-500 rounded-lg shadow-lg backdrop-blur-sm animate-slide-in">
+                    <div class="flex items-start gap-3 p-3">
+                        <div class="bg-red-100 rounded-full p-1.5 flex-shrink-0">
+                            <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="font-semibold text-sm text-gray-800 leading-tight">{{ session('error') }}</p>
+                        </div>
+                        <button onclick="document.getElementById('notification').remove()" class="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        @endif
 
         <!-- Footer -->
         <footer class="bg-white border-t border-gray-200 mt-auto">

@@ -44,6 +44,37 @@
         0%, 100% { opacity: 1; }
         50% { opacity: 0.5; }
     }
+
+    /* Floating notification animation */
+    .slide-in-right {
+        animation: slideInRight 0.4s ease-out;
+    }
+
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    .slide-out-right {
+        animation: slideOutRight 0.3s ease-in forwards;
+    }
+
+    @keyframes slideOutRight {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(120%);
+            opacity: 0;
+        }
+    }
 </style>
 @endpush
 
@@ -67,11 +98,11 @@
     </div>
     
     <!-- Scanner Instructions Banner -->
-    <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-2xl shadow-xl p-6 text-white">
+    <div class="bg-gradient-to-r from-green-600 via-green-600 to-green-600 rounded-2xl shadow-xl p-6 text-white">
         <div class="flex items-start space-x-4">
             <div class="flex-1">
                 <h3 class="text-xl font-bold mb-2">How to Use QR Scanner</h3>
-                <ul class="space-y-1 text-blue-100">
+                <ul class="space-y-1 text-green-100">
                     <li class="flex items-center">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -139,11 +170,6 @@
         <div class="bg-gradient-to-r from-green-600 to-emerald-600 p-6 text-white">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
-                    <div class="bg-white/20 backdrop-blur-sm p-3 rounded-xl">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-                        </svg>
-                    </div>
                     <div>
                         <h3 class="text-xl font-bold">Camera Scanner</h3>
                         <p class="text-green-100 text-sm">Point at QR code to scan</p>
@@ -161,10 +187,10 @@
         
         <div class="p-6">
             <!-- QR Reader Container -->
-            <div id="qr-reader" class="mb-6"></div>
+            <div id="qr-reader"></div>
             
             <!-- Camera Selection -->
-            <div class="bg-gray-50 rounded-xl p-4 border-2 border-gray-200">
+            <div class="bg-gray-50 rounded-xl p-4 border-2 border-gray-200 mt-6">
                 <label for="camera-select" class="block text-sm font-bold text-gray-700 mb-3 flex items-center">
                     <svg class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
@@ -178,8 +204,8 @@
         </div>
     </div>
 
-    <!-- Alert Messages Container -->
-    <div id="alert-container" class="space-y-3"></div>
+    <!-- Alert Messages Container (Floating) -->
+    <div id="alert-container" class="fixed top-20 right-4 z-50 space-y-2 max-w-sm w-full px-4 sm:px-0"></div>
 
     <!-- Recent Scans -->
     <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
@@ -236,7 +262,7 @@
             onScanError
         ).catch(err => {
             console.error("Error starting scanner:", err);
-            showAlert('error', '❌ Failed to start camera. Please allow camera access.');
+            showAlert('error', 'Failed to start camera. Please allow camera access.');
         });
     }
 
@@ -300,7 +326,7 @@
             console.error('Error:', error);
             errorCount++;
             updateCounts();
-            showAlert('error', '❌ Error processing check-in. Please try again.');
+            showAlert('error', 'Error processing check-in. Please try again.');
             updateScannerStatus('Ready to Scan', 'text-white');
         });
     }
@@ -332,48 +358,56 @@
         const alertId = 'alert-' + Date.now();
         
         const bgColor = type === 'success' 
-            ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-400' 
-            : 'bg-gradient-to-r from-red-50 to-rose-50 border-red-400';
-        const textColor = type === 'success' ? 'text-green-800' : 'text-red-800';
+            ? 'bg-white' 
+            : 'bg-white';
+        const borderColor = type === 'success' ? 'border-green-500' : 'border-red-500';
+        const textColor = type === 'success' ? 'text-gray-800' : 'text-gray-800';
+        const iconBg = type === 'success' ? 'bg-green-100' : 'bg-red-100';
         const iconColor = type === 'success' ? 'text-green-600' : 'text-red-600';
         const icon = type === 'success' 
-            ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>'
+            ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>'
             : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>';
         
         let bookingInfo = '';
         if (booking) {
             bookingInfo = `
-                <div class="mt-3 grid grid-cols-2 gap-2 text-sm ${textColor}">
-                    <div class="bg-white/50 rounded-lg p-2">
-                        <p class="text-xs text-gray-600 font-semibold">Mountain</p>
-                        <p class="font-bold">${booking.mountain}</p>
-                    </div>
-                    <div class="bg-white/50 rounded-lg p-2">
-                        <p class="text-xs text-gray-600 font-semibold">Hikers</p>
-                        <p class="font-bold">${booking.member_count} people</p>
-                    </div>
-                    <div class="bg-white/50 rounded-lg p-2 col-span-2">
-                        <p class="text-xs text-gray-600 font-semibold">Check-in Date</p>
-                        <p class="font-bold">${booking.check_in_date}</p>
-                    </div>
+                <div class="mt-2 flex items-center gap-3 text-xs text-gray-600">
+                    <span class="flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                        </svg>
+                        ${booking.mountain}
+                    </span>
+                    <span class="flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                        ${booking.member_count} hikers
+                    </span>
+                    <span class="flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        ${booking.check_in_date}
+                    </span>
                 </div>
             `;
         }
         
         const alertHTML = `
-            <div id="${alertId}" class="border-l-4 ${bgColor} p-5 rounded-xl shadow-lg ${type === 'success' ? 'success-animation' : 'shake'}">
-                <div class="flex items-start">
-                    <div class="flex-shrink-0">
-                        <svg class="w-7 h-7 ${iconColor}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div id="${alertId}" class="${bgColor} border-l-4 ${borderColor} rounded-lg shadow-lg slide-in-right backdrop-blur-sm">
+                <div class="flex items-start gap-3 p-3">
+                    <div class="${iconBg} rounded-full p-1.5 flex-shrink-0">
+                        <svg class="w-4 h-4 ${iconColor}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             ${icon}
                         </svg>
                     </div>
-                    <div class="ml-4 flex-1">
-                        <p class="font-bold text-lg ${textColor}">${message}</p>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-semibold text-sm ${textColor} leading-tight">${message}</p>
                         ${bookingInfo}
                     </div>
-                    <button onclick="document.getElementById('${alertId}').remove()" class="ml-4 ${textColor} hover:opacity-70 transition-opacity">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button onclick="dismissAlert('${alertId}')" class="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                         </svg>
                     </button>
@@ -385,13 +419,18 @@
         
         // Auto remove after 5 seconds
         setTimeout(() => {
-            const alert = document.getElementById(alertId);
-            if (alert) {
-                alert.style.transition = 'opacity 0.5s ease-out';
-                alert.style.opacity = '0';
-                setTimeout(() => alert.remove(), 500);
-            }
+            dismissAlert(alertId);
         }, 5000);
+    }
+
+    // Dismiss Alert with animation
+    function dismissAlert(alertId) {
+        const alert = document.getElementById(alertId);
+        if (alert) {
+            alert.classList.remove('slide-in-right');
+            alert.classList.add('slide-out-right');
+            setTimeout(() => alert.remove(), 300);
+        }
     }
 
     // Add Recent Scan
@@ -483,11 +522,11 @@
                 });
             });
         } else {
-            showAlert('error', '❌ No cameras detected on this device.');
+            showAlert('error', 'No cameras detected on this device.');
         }
     }).catch(err => {
         console.error("Error getting cameras:", err);
-        showAlert('error', '❌ Failed to access camera. Please check browser permissions.');
+        showAlert('error', 'Failed to access camera. Please check browser permissions.');
     });
 
     // Cleanup on page unload
