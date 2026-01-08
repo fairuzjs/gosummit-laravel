@@ -4,6 +4,16 @@
 @section('header-title', 'Manage Quotas : ' . $mountain->name)
 
 @section('content')
+<div class="max-w-7xl mx-auto space-y-6">
+    <!-- Breadcrumb Navigation -->
+    <nav class="flex items-center space-x-2 text-sm text-gray-500">
+        <a href="{{ route('admin.mountains.index') }}" class="hover:text-gray-700 transition-colors">Mountains</a>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+        <span class="text-gray-900 font-medium">Manage Quotas: {{ $mountain->name }}</span>
+    </nav>
+
 <!-- Form Set Quota -->
 <div class="p-4 sm:p-6 lg:p-8 bg-white overflow-hidden shadow-xl sm:rounded-2xl">
     <h3 class="text-xl font-bold text-gray-900 mb-6">Set Quota for a Date Range</h3>
@@ -84,6 +94,7 @@
                 </li>
             @endforelse
         </ul>
+    </div>
     </div>
 </div>
 @endsection

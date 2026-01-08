@@ -26,6 +26,10 @@ class RedirectIfAuthenticated
                     return redirect()->route('admin.dashboard');
                 }
                 
+                if ($guard === 'validator') {
+                    return redirect()->route('validator.dashboard');
+                }
+                
                 // Default redirect for web guard (customer)
                 return redirect(RouteServiceProvider::HOME);
             }

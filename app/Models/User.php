@@ -24,6 +24,7 @@ class User extends Authenticatable
         'profile_picture',
         'phone',
         'identity_number',
+        'leaderboard_privacy',
     ];
 
     /**
@@ -44,6 +45,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'leaderboard_privacy' => 'array',
     ];
 
     // DEFINISI RELASI: Satu User bisa memiliki banyak Booking
@@ -56,5 +58,70 @@ class User extends Authenticatable
     public function savedMembers()
     {
         return $this->hasMany(SavedMember::class);
+    }
+
+    // DEFINISI RELASI: Satu User memiliki satu User Statistic
+    public function userStatistic()
+    {
+        return $this->hasOne(UserStatistic::class);
+    }
+
+    // DEFINISI RELASI: Satu User memiliki banyak Photos
+    public function photos()
+    {
+        return $this->hasMany(UserPhoto::class)->orderBy('order');
+    }
+
+    /**
+     * Get or create user statistic
+     */
+    public function getStatistic()
+    {
+        if (!$this->userStatistic) {
+            $this->userStatistic()->create([]);
+        }
+        
+        return $this->userStatistic;
+    }
+
+    /**
+     * Get leaderboard privacy settings with defaults
+     */
+    public function getLeaderboardPrivacy()
+    {
+        $defaults = [
+            'show_total_spent' => true,
+            'show_mountain_history' => true,
+            'show_email' => false,
+        ];
+
+        return array_merge($defaults, $this->leaderboard_privacy ?? []);
+    }
+
+    /**
+     * Check if total spent should be visible
+     */
+    public function shouldShowTotalSpent()
+    {
+        $privacy = $this->getLeaderboardPrivacy();
+        return $privacy['show_total_spent'] ?? true;
+    }
+
+    /**
+     * Check if mountain history should be visible
+     */
+    public function shouldShowMountainHistory()
+    {
+        $privacy = $this->getLeaderboardPrivacy();
+        return $privacy['show_mountain_history'] ?? true;
+    }
+
+    /**
+     * Check if email should be visible
+     */
+    public function shouldShowEmail()
+    {
+        $privacy = $this->getLeaderboardPrivacy();
+        return $privacy['show_email'] ?? false;
     }
 }

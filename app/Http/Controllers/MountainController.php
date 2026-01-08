@@ -49,7 +49,7 @@ class MountainController extends Controller
             $query->where('status', $request->status);
         }
         
-        $mountains = $query->latest()->get();
+        $mountains = $query->latest()->paginate(10);
         return view('admin.mountains.index', compact('mountains'));
     }
 

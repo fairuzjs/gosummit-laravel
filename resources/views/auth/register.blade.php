@@ -750,7 +750,34 @@
                     <div class="password-strength">
                         <div class="password-strength-bar" id="strengthBar"></div>
                     </div>
-                    <div class="password-hint" id="strengthText">{{ __('Use 8+ characters with mix of letters, numbers & symbols') }}</div>
+                    
+                    <!-- Password Requirements Grid (2x2) -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px;">
+                        <div class="req-item" id="req-length" style="font-size: 11px; color: #718096; display: flex; align-items: center; gap: 6px;">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink: 0;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            8+ characters
+                        </div>
+                        <div class="req-item" id="req-upper" style="font-size: 11px; color: #718096; display: flex; align-items: center; gap: 6px;">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink: 0;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Uppercase
+                        </div>
+                        <div class="req-item" id="req-lower" style="font-size: 11px; color: #718096; display: flex; align-items: center; gap: 6px;">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink: 0;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Lowercase
+                        </div>
+                        <div class="req-item" id="req-number" style="font-size: 11px; color: #718096; display: flex; align-items: center; gap: 6px;">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink: 0;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Number
+                        </div>
+                    </div>
                     @error('password')
                         <span class="error-message" id="password-error" role="alert">{{ $message }}</span>
                     @enderror
@@ -824,29 +851,47 @@
         function checkPasswordStrength() {
             const password = document.getElementById('password').value;
             const strengthBar = document.getElementById('strengthBar');
-            const strengthText = document.getElementById('strengthText');
             
-            let strength = 0;
+            // Check requirements
+            const hasLength = password.length >= 8;
+            const hasUpper = /[A-Z]/.test(password);
+            const hasLower = /[a-z]/.test(password);
+            const hasNumber = /\d/.test(password);
             
-            if (password.length >= 8) strength++;
-            if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
-            if (password.match(/[0-9]/)) strength++;
-            if (password.match(/[^a-zA-Z0-9]/)) strength++;
+            // Update requirement indicators
+            updateReq('req-length', hasLength);
+            updateReq('req-upper', hasUpper);
+            updateReq('req-lower', hasLower);
+            updateReq('req-number', hasNumber);
+            
+            // Calculate strength
+            const checks = [hasLength, hasUpper, hasLower, hasNumber].filter(Boolean).length;
             
             strengthBar.className = 'password-strength-bar';
             
-            if (strength === 0) {
+            if (checks === 0) {
                 strengthBar.classList.remove('weak', 'medium', 'strong');
-                strengthText.textContent = 'Use 8+ characters with mix of letters, numbers & symbols';
-            } else if (strength <= 2) {
+            } else if (checks <= 2) {
                 strengthBar.classList.add('weak');
-                strengthText.textContent = 'Weak password - Add more variety';
-            } else if (strength === 3) {
+            } else if (checks === 3) {
                 strengthBar.classList.add('medium');
-                strengthText.textContent = 'Medium strength - Almost there!';
             } else {
                 strengthBar.classList.add('strong');
-                strengthText.textContent = 'Strong password!';
+            }
+        }
+        
+        // Update requirement indicator
+        function updateReq(id, met) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            
+            const svg = el.querySelector('svg path');
+            if (met) {
+                el.style.color = '#48bb78';
+                svg.setAttribute('d', 'M5 13l4 4L19 7');
+            } else {
+                el.style.color = '#718096';
+                svg.setAttribute('d', 'M6 18L18 6M6 6l12 12');
             }
         }
 

@@ -11,20 +11,28 @@ class BookingController extends Controller
 {
     /**
      * Menampilkan daftar booking yang siap untuk Check-In (status paid)
-     * atau yang sudah Check-In, mulai dari 7 hari yang lalu hingga masa mendatang.
+     * atau yang sudah Check-In dalam 24 jam terakhir.
+     * Dibatasi maksimal 10 bookings untuk menghindari penumpukan.
      */
     public function index()
     {
         // Mendapatkan booking yang statusnya 'paid' (siap check-in) atau sudah 'checked_in'
+        // Hanya tampilkan booking dalam 24 jam terakhir
         $bookings = Booking::with(['user', 'mountain', 'trailRoute'])
             ->whereIn('status', ['paid', 'checked_in'])
             
-            // Perubahan: Hanya tampilkan booking dari 7 hari yang lalu hingga masa mendatang
-            // Ini membantu validator mengakomodasi keterlambatan check-in
-            ->whereDate('check_in_date', '>=', Carbon::today()->subDays(30))
+            // Filter: Hanya booking yang dibuat/diupdate dalam 24 jam terakhir
+            ->where(function($query) {
+                $query->where('created_at', '>=', Carbon::now()->subHours(24))
+                      ->orWhere('updated_at', '>=', Carbon::now()->subHours(24));
+            })
             
-            ->latest('check_in_date')
-            ->paginate(10);
+            // Urutkan berdasarkan yang terbaru
+            ->latest('updated_at')
+            
+            // Batasi maksimal 10 bookings
+            ->limit(10)
+            ->get();
 
         return view('validator.bookings.index', compact('bookings'));
     }
@@ -49,11 +57,19 @@ class BookingController extends Controller
     }
 
     /**
-     * Menampilkan halaman QR Code Scanner.
+     * Menampilkan halaman QR Code Scanner dengan recent scan history.
      */
     public function scanner()
     {
-        return view('validator.bookings.scanner');
+        // Ambil 5 booking terakhir yang di-check-in dalam 24 jam terakhir
+        $recentScans = Booking::with(['user', 'mountain', 'trailRoute'])
+            ->where('status', 'checked_in')
+            ->where('updated_at', '>=', Carbon::now()->subHours(24))
+            ->latest('updated_at')
+            ->limit(5)
+            ->get();
+
+        return view('validator.bookings.scanner', compact('recentScans'));
     }
 
     /**

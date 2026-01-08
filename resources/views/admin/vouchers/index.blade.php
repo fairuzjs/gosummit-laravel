@@ -202,7 +202,7 @@
                                                 </svg>
                                                 Edit
                                             </a>
-                                            <form action="{{ route('admin.vouchers.destroy', $voucher) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this voucher?')">
+                                            <form action="{{ route('admin.vouchers.destroy', $voucher) }}" method="POST" class="inline" onsubmit="return confirmAction('Are you sure you want to delete this voucher?', this)">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors duration-200">
@@ -317,7 +317,7 @@
                                         </svg>
                                         Edit
                                     </a>
-                                    <form action="{{ route('admin.vouchers.destroy', $voucher) }}" method="POST" class="flex-1" onsubmit="return confirm('Are you sure you want to delete this voucher?')">
+                                    <form action="{{ route('admin.vouchers.destroy', $voucher) }}" method="POST" class="flex-1" onsubmit="return confirmAction('Are you sure you want to delete this voucher?', this)">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="w-full inline-flex items-center justify-center px-3 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 text-sm font-medium">

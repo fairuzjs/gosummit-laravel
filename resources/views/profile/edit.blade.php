@@ -325,7 +325,9 @@
 <body class="font-sans antialiased">
     <!-- Floating Notifications -->
     <div x-data="{ 
-message: '{{ session('status') === 'profile-updated' ? __('Profil berhasil diperbarui') : (session('status') === 'password-updated' ? __('Kata sandi berhasil diperbarui') : (session('success') ? session('success') : '')) }}',
+        show: {{ session('status') || session('success') || session('privacy_updated') || session('profile_updated') || session('member_added') || session('member_deleted') ? 'true' : 'false' }},
+        message: '{{ session('privacy_updated') ? __('Pengaturan privasi berhasil diperbarui') : (session('profile_updated') ? __('Profil berhasil diperbarui') : (session('status') === 'profile-updated' ? __('Profil berhasil diperbarui') : (session('status') === 'password-updated' ? __('Kata sandi berhasil diperbarui') : (session('member_added') ? __('Data anggota berhasil ditambahkan') : (session('member_deleted') ? __('Data anggota berhasil dihapus') : (session('success') ? session('success') : '')))))) }}',
+        init() {
             if (this.show) {
                 setTimeout(() => {
                     this.$el.classList.add('notification-exit');
@@ -788,46 +790,36 @@ message: '{{ session('status') === 'profile-updated' ? __('Profil berhasil diper
                                                x-text="'Kekuatan: ' + strengthText"></p>
                                         </div>
 
-                                        <!-- Requirements -->
-                                        <div class="mt-3 bg-gray-50 p-3 rounded-lg border border-gray-200">
-                                            <h4 class="text-xs font-semibold text-gray-700 mb-2">{{ __('Persyaratan:') }}</h4>
-                                            <ul class="space-y-1">
-                                                <li class="flex items-center text-xs" :class="requirements.length ? 'text-green-600' : 'text-gray-600'">
-                                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path x-show="requirements.length" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                                        <path x-show="!requirements.length" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                                    </svg>
-                                                    {{ __('Minimal 8 karakter') }}
-                                                </li>
-                                                <li class="flex items-center text-xs" :class="requirements.uppercase ? 'text-green-600' : 'text-gray-600'">
-                                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path x-show="requirements.uppercase" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                                        <path x-show="!requirements.uppercase" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                                    </svg>
-                                                    {{ __('Huruf kapital') }}
-                                                </li>
-                                                <li class="flex items-center text-xs" :class="requirements.lowercase ? 'text-green-600' : 'text-gray-600'">
-                                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path x-show="requirements.lowercase" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                                        <path x-show="!requirements.lowercase" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                                    </svg>
-                                                    {{ __('Huruf kecil') }}
-                                                </li>
-                                                <li class="flex items-center text-xs" :class="requirements.number ? 'text-green-600' : 'text-gray-600'">
-                                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path x-show="requirements.number" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                                        <path x-show="!requirements.number" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                                    </svg>
-                                                    {{ __('Angka') }}
-                                                </li>
-                                                <li class="flex items-center text-xs" :class="requirements.special ? 'text-green-600' : 'text-gray-600'">
-                                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path x-show="requirements.special" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                                        <path x-show="!requirements.special" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                                    </svg>
-                                                    {{ __('Karakter spesial') }}
-                                                </li>
-                                            </ul>
+                                        <!-- Requirements Grid (2x2) -->
+                                        <div class="mt-3 grid grid-cols-2 gap-2">
+                                            <div class="flex items-center text-xs" :class="requirements.length ? 'text-green-600' : 'text-gray-600'">
+                                                <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path x-show="requirements.length" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                    <path x-show="!requirements.length" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                </svg>
+                                                8+ characters
+                                            </div>
+                                            <div class="flex items-center text-xs" :class="requirements.uppercase ? 'text-green-600' : 'text-gray-600'">
+                                                <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path x-show="requirements.uppercase" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                    <path x-show="!requirements.uppercase" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                </svg>
+                                                Uppercase
+                                            </div>
+                                            <div class="flex items-center text-xs" :class="requirements.lowercase ? 'text-green-600' : 'text-gray-600'">
+                                                <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path x-show="requirements.lowercase" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                    <path x-show="!requirements.lowercase" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                </svg>
+                                                Lowercase
+                                            </div>
+                                            <div class="flex items-center text-xs" :class="requirements.number ? 'text-green-600' : 'text-gray-600'">
+                                                <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path x-show="requirements.number" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                    <path x-show="!requirements.number" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                </svg>
+                                                Number
+                                            </div>
                                         </div>
                                     </div>
 
@@ -1044,14 +1036,119 @@ message: '{{ session('status') === 'profile-updated' ? __('Profil berhasil diper
                         <!-- Settings Tab -->
                         <div x-show="activeTab === 'settings'" x-cloak>
 
+                            <!-- Leaderboard Privacy Settings -->
+                            <div class="card-modern mb-6">
+                                <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ __('Pengaturan Privasi Leaderboard') }}</h2>
+                                <p class="text-gray-600 mb-6">{{ __('Kontrol informasi apa saja yang ditampilkan di leaderboard publik') }}</p>
+
+                                <form method="POST" action="{{ route('profile.privacy.update') }}" x-data="{
+                                    showTotalSpent: {{ $user->shouldShowTotalSpent() ? 'true' : 'false' }},
+                                    showMountainHistory: {{ $user->shouldShowMountainHistory() ? 'true' : 'false' }},
+                                    showEmail: {{ $user->shouldShowEmail() ? 'true' : 'false' }}
+                                }">
+                                    @csrf
+                                    @method('PATCH')
+
+                                    <!-- Show Total Spent Toggle -->
+                                    <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                                        <div class="flex-1 pr-4">
+                                            <div class="flex items-center gap-3 mb-1">
+                                                <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                                <h4 class="font-semibold text-gray-900">{{ __('Tampilkan Total Pengeluaran') }}</h4>
+                                            </div>
+                                            <p class="text-sm text-gray-500 ml-8">{{ __('Orang lain dapat melihat total pengeluaran Anda di leaderboard') }}</p>
+                                        </div>
+                                        <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                                            <input type="hidden" name="show_total_spent" value="0">
+                                            <input type="checkbox" 
+                                                   name="show_total_spent" 
+                                                   value="1" 
+                                                   x-model="showTotalSpent"
+                                                   {{ $user->shouldShowTotalSpent() ? 'checked' : '' }}
+                                                   class="sr-only peer">
+                                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-blue-600"></div>
+                                        </label>
+                                    </div>
+
+                                    <!-- Show Mountain History Toggle -->
+                                    <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                                        <div class="flex-1 pr-4">
+                                            <div class="flex items-center gap-3 mb-1">
+                                                <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                                                </svg>
+                                                <h4 class="font-semibold text-gray-900">{{ __('Tampilkan Riwayat Gunung') }}</h4>
+                                            </div>
+                                            <p class="text-sm text-gray-500 ml-8">{{ __('Orang lain dapat melihat gunung yang pernah Anda daki') }}</p>
+                                        </div>
+                                        <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                                            <input type="hidden" name="show_mountain_history" value="0">
+                                            <input type="checkbox" 
+                                                   name="show_mountain_history" 
+                                                   value="1" 
+                                                   x-model="showMountainHistory"
+                                                   class="sr-only peer">
+                                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-blue-600"></div>
+                                        </label>
+                                    </div>
+
+                                    <!-- Show Email Toggle -->
+                                    <div class="flex items-center justify-between py-4">
+                                        <div class="flex-1 pr-4">
+                                            <div class="flex items-center gap-3 mb-1">
+                                                <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                                </svg>
+                                                <h4 class="font-semibold text-gray-900">{{ __('Tampilkan Email Lengkap') }}</h4>
+                                            </div>
+                                            <p class="text-sm text-gray-500 ml-8">{{ __('Tampilkan email lengkap tanpa sensor (default: disembunyikan)') }}</p>
+                                        </div>
+                                        <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                                            <input type="hidden" name="show_email" value="0">
+                                            <input type="checkbox" 
+                                                   name="show_email" 
+                                                   value="1" 
+                                                   x-model="showEmail"
+                                                   {{ $user->shouldShowEmail() ? 'checked' : '' }}
+                                                   class="sr-only peer">
+                                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-blue-600"></div>
+                                        </label>
+                                    </div>
+
+                                    <!-- Info Box -->
+                                    <div class="mt-6 bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+                                        <div class="flex">
+                                            <div class="flex-shrink-0">
+                                                <svg class="h-5 w-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                            </div>
+                                            <div class="ml-3">
+                                                <h3 class="text-sm font-medium text-blue-800">{{ __('Catatan Penting') }}</h3>
+                                                <div class="mt-2 text-sm text-blue-700">
+                                                    <ul class="list-disc list-inside space-y-1">
+                                                        <li>{{ __('Anda tetap muncul di peringkat leaderboard meskipun menyembunyikan data') }}</li>
+                                                        <li>{{ __('Nama dan jumlah pendakian selalu ditampilkan') }}</li>
+                                                        <li>{{ __('Pengaturan ini hanya mempengaruhi tampilan di leaderboard publik') }}</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-6 flex justify-end">
+                                        <button type="submit" class="btn-primary">
+                                            {{ __('Simpan Pengaturan Privasi') }}
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+
                             <!-- Delete Account -->
                             <div class="card-modern border-2 border-red-100">
                                 <div class="flex items-start gap-4 mb-4">
-                                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                                        </svg>
-                                    </div>
                                     <div>
                                         <h2 class="text-xl font-bold text-gray-800 mb-2">{{ __('Hapus Akun') }}</h2>
                                         <p class="text-gray-600 mb-4">
@@ -1143,5 +1240,8 @@ message: '{{ session('status') === 'profile-updated' ? __('Profil berhasil diper
             </div>
         </div>
     </div>
+
+    {{-- Profile Toast Notification --}}
+    <x-profile-toast />
 </body>
 </html>

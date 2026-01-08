@@ -24,6 +24,54 @@ class ProfileController extends Controller
     }
 
     /**
+     * Display a public user profile.
+     */
+    public function show($userId): View
+    {
+        $user = \App\Models\User::findOrFail($userId);
+        $statistic = $user->getStatistic();
+        
+        // Get privacy settings
+        $privacy = $user->getLeaderboardPrivacy();
+        
+        // Get completed bookings with mountains (only if privacy allows)
+        $mountainHistory = null;
+        $uniqueMountains = collect();
+        
+        if ($privacy['show_mountain_history']) {
+            $mountainHistory = $user->bookings()
+                ->whereIn('status', ['completed', 'checked_in'])
+                ->with(['mountain', 'trailRoute'])
+                ->orderBy('check_in_date', 'desc')
+                ->get();
+            
+            // Get unique mountains climbed
+            $uniqueMountains = $mountainHistory
+                ->unique('mountain_id')
+                ->pluck('mountain');
+        }
+        
+        // Calculate total spent (only if privacy allows)
+        $totalSpent = null;
+        if ($privacy['show_total_spent']) {
+            $totalSpent = $statistic->total_spent ?? 0;
+        }
+        
+        // Get user photos
+        $photos = $user->photos;
+        
+        return view('profile.show', compact(
+            'user',
+            'statistic',
+            'privacy',
+            'mountainHistory',
+            'uniqueMountains',
+            'totalSpent',
+            'photos'
+        ));
+    }
+
+    /**
      * Update the user's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
@@ -51,7 +99,7 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('profile.edit')->with('profile_updated', 'Profile information has been updated successfully!');
     }
 
     /**
@@ -105,7 +153,7 @@ class ProfileController extends Controller
         
         $user->savedMembers()->create($validated);
         
-        return Redirect::route('profile.edit')->with('success', 'Data anggota berhasil disimpan!');
+        return Redirect::route('profile.edit')->with('member_added', 'Member data has been saved successfully!');
     }
 
     /**
@@ -120,6 +168,75 @@ class ProfileController extends Controller
         
         $member->delete();
         
-        return Redirect::route('profile.edit')->with('success', 'Data anggota berhasil dihapus!');
+        return Redirect::route('profile.edit')->with('member_deleted', 'Member data has been deleted successfully!');
+    }
+
+    /**
+     * Update leaderboard privacy settings.
+     */
+    public function updatePrivacy(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'show_total_spent' => 'required|boolean',
+            'show_mountain_history' => 'required|boolean',
+            'show_email' => 'required|boolean',
+        ]);
+
+        $user = $request->user();
+        $user->leaderboard_privacy = $validated;
+        $user->save();
+
+        return Redirect::route('profile.edit')->with('privacy_updated', 'Privacy settings updated successfully!');
+    }
+
+    /**
+     * Upload a new photo to user gallery.
+     */
+    public function uploadPhoto(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'photo' => 'required|image|mimes:jpeg,png,jpg|max:5120', // max 5MB
+            'caption' => 'nullable|string|max:255',
+            'location' => 'nullable|string|max:255',
+        ]);
+
+        $user = $request->user();
+        
+        // Store the photo
+        $path = $request->file('photo')->store('user-photos', 'public');
+        
+        // Get the next order number
+        $maxOrder = $user->photos()->max('order') ?? 0;
+        
+        // Create photo record
+        $user->photos()->create([
+            'photo_path' => $path,
+            'caption' => $request->caption,
+            'location' => $request->location,
+            'order' => $maxOrder + 1,
+        ]);
+
+        return Redirect::route('profile.show', $user->id)->with('photo_uploaded', 'Photo uploaded successfully!');
+    }
+
+    /**
+     * Delete a photo from user gallery.
+     */
+    public function deletePhoto(\App\Models\UserPhoto $photo): RedirectResponse
+    {
+        // Check if the photo belongs to the authenticated user
+        if ($photo->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Delete the photo file from storage
+        if (Storage::disk('public')->exists($photo->photo_path)) {
+            Storage::disk('public')->delete($photo->photo_path);
+        }
+
+        // Delete the photo record
+        $photo->delete();
+
+        return Redirect::route('profile.show', Auth::id())->with('photo_deleted', 'Photo deleted successfully!');
     }
 }

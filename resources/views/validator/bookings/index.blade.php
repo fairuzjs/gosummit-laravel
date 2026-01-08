@@ -53,7 +53,7 @@
                     </div>
                     <div class="text-right">
                         <p class="text-sm font-semibold text-gray-600 uppercase tracking-wide">Total Bookings</p>
-                        <p class="text-4xl font-bold text-gray-900 mt-1">{{ $bookings->total() }}</p>
+                        <p class="text-4xl font-bold text-gray-900 mt-1">{{ $bookings->count() }}</p>
                     </div>
                 </div>
                 <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -78,7 +78,7 @@
                     </div>
                 </div>
                 <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full" style="width: {{ $bookings->total() > 0 ? ($bookings->where('status', 'paid')->count() / $bookings->total()) * 100 : 0 }}%"></div>
+                    <div class="h-full bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full" style="width: {{ $bookings->count() > 0 ? ($bookings->where('status', 'paid')->count() / $bookings->count()) * 100 : 0 }}%"></div>
                 </div>
                 <p class="text-xs text-gray-500 mt-2">Waiting for check-in</p>
             </div>
@@ -99,7 +99,7 @@
                     </div>
                 </div>
                 <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r from-green-500 to-green-600 rounded-full" style="width: {{ $bookings->total() > 0 ? ($bookings->where('status', 'checked_in')->count() / $bookings->total()) * 100 : 0 }}%"></div>
+                    <div class="h-full bg-gradient-to-r from-green-500 to-green-600 rounded-full" style="width: {{ $bookings->count() > 0 ? ($bookings->where('status', 'checked_in')->count() / $bookings->count()) * 100 : 0 }}%"></div>
                 </div>
                 <p class="text-xs text-gray-500 mt-2">Successfully checked in</p>
             </div>
@@ -123,9 +123,6 @@
                     <h4 class="font-bold text-gray-900">Scan QR Code</h4>
                     <p class="text-sm text-gray-600">Quick check-in with QR scanner</p>
                 </div>
-                <svg class="w-6 h-6 ml-auto text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                </svg>
             </a>
 
             <div class="flex items-center p-4 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl">
@@ -142,25 +139,27 @@
         </div>
     </div>
 
-    <!-- Bookings Table -->
+    <!-- Bookings Section -->
     <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-        <div class="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100">
+        <div class="p-4 md:p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100">
             <div class="flex items-center justify-between">
                 <div>
-                    <h3 class="text-xl font-bold text-gray-900 flex items-center">
+                    <h3 class="text-lg md:text-xl font-bold text-gray-900 flex items-center">
                         Recent Bookings
+                        <span class="ml-2 px-2 py-0.5 bg-orange-100 text-orange-700 text-xs font-semibold rounded-full">Last 24h</span>
                     </h3>
-                    <p class="text-sm text-gray-600 mt-1">Manage and check-in hikers</p>
+                    <p class="text-xs md:text-sm text-gray-600 mt-1">Showing bookings from the last 24 hours (max 10)</p>
                 </div>
                 <div class="flex items-center space-x-2">
-                    <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full">
-                        {{ $bookings->total() }} Total
+                    <span class="px-2 md:px-3 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full">
+                        {{ $bookings->count() }} Total
                     </span>
                 </div>
             </div>
         </div>
         
-        <div class="overflow-x-auto">
+        <!-- Desktop Table View (hidden on mobile) -->
+        <div class="hidden md:block overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
@@ -208,16 +207,10 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             @if($booking->status === 'paid')
                                 <span class="px-3 py-1.5 inline-flex items-center text-xs leading-5 font-bold rounded-full bg-yellow-100 text-yellow-800 border border-yellow-200">
-                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
                                     Pending
                                 </span>
                             @else
                                 <span class="px-3 py-1.5 inline-flex items-center text-xs leading-5 font-bold rounded-full bg-green-100 text-green-800 border border-green-200">
-                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                    </svg>
                                     Checked In
                                 </span>
                             @endif
@@ -236,9 +229,6 @@
                                 </form>
                             @else
                                 <span class="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-500 text-xs font-medium rounded-lg">
-                                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                    </svg>
                                     Completed
                                 </span>
                             @endif
@@ -263,12 +253,89 @@
             </table>
         </div>
 
-        <!-- Pagination -->
-        @if($bookings->hasPages())
-        <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
-            {{ $bookings->links() }}
+        <!-- Mobile Card View (visible only on mobile) -->
+        <div class="md:hidden">
+            @forelse($bookings as $booking)
+            <div class="border-b border-gray-200 p-4 hover:bg-green-50 transition-colors duration-150">
+                <!-- Booking Code & Status -->
+                <div class="flex items-center justify-between mb-3">
+                    <span class="font-mono text-sm font-bold text-gray-900">{{ $booking->booking_code }}</span>
+                    @if($booking->status === 'paid')
+                        <span class="px-2 py-1 inline-flex items-center text-xs leading-5 font-bold rounded-full bg-yellow-100 text-yellow-800 border border-yellow-200">
+                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Pending
+                        </span>
+                    @else
+                        <span class="px-2 py-1 inline-flex items-center text-xs leading-5 font-bold rounded-full bg-green-100 text-green-800 border border-green-200">
+                            Checked In
+                        </span>
+                    @endif
+                </div>
+
+                <!-- Customer Info -->
+                <div class="mb-3">
+                    <div class="text-sm font-medium text-gray-900">{{ $booking->user->name }}</div>
+                    <div class="text-xs text-gray-500 truncate">{{ $booking->user->email }}</div>
+                </div>
+
+                <!-- Mountain & Trail Info -->
+                <div class="grid grid-cols-2 gap-2 mb-3 text-xs">
+                    <div>
+                        <span class="text-gray-500">Mountain:</span>
+                        <div class="font-semibold text-gray-900 truncate">{{ $booking->mountain->name }}</div>
+                    </div>
+                    <div>
+                        <span class="text-gray-500">Trail:</span>
+                        <div class="font-semibold text-gray-900 truncate">{{ $booking->trailRoute->name ?? '-' }}</div>
+                    </div>
+                </div>
+
+                <!-- Date & Hikers Info -->
+                <div class="grid grid-cols-2 gap-2 mb-3 text-xs">
+                    <div>
+                        <span class="text-gray-500">Date:</span>
+                        <div class="font-medium text-gray-900">{{ \Carbon\Carbon::parse($booking->check_in_date)->format('d M Y') }}</div>
+                        <div class="text-xs text-gray-500">{{ \Carbon\Carbon::parse($booking->check_in_date)->diffForHumans() }}</div>
+                    </div>
+                    <div>
+                        <span class="text-gray-500">Hikers:</span>
+                        <div class="font-semibold text-gray-900">{{ $booking->member_count }} person(s)</div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="mt-3">
+                    @if($booking->status === 'paid')
+                        <form action="{{ route('validator.bookings.checkIn', $booking) }}" method="POST" onsubmit="return confirm('Confirm check-in for {{ $booking->booking_code }}?')">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="w-full inline-flex items-center justify-center px-4 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white text-sm font-bold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg">
+                                Check In Now
+                            </button>
+                        </form>
+                    @else
+                        <div class="w-full inline-flex items-center justify-center px-4 py-2.5 bg-gray-100 text-gray-500 text-sm font-medium rounded-lg">
+                            Completed
+                        </div>
+                    @endif
+                </div>
+            </div>
+            @empty
+            <div class="px-6 py-16 text-center">
+                <div class="flex flex-col items-center justify-center">
+                    <div class="bg-gray-100 p-6 rounded-full mb-4">
+                        <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                    </div>
+                    <p class="text-gray-500 text-lg font-semibold mb-2">No bookings to check-in</p>
+                    <p class="text-gray-400 text-sm">New bookings will appear here</p>
+                </div>
+            </div>
+            @endforelse
         </div>
-        @endif
     </div>
 </div>
 

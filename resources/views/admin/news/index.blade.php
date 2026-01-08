@@ -279,7 +279,7 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div class="flex items-center gap-3">
                                     <a href="{{ route('admin.news.edit', $item) }}" class="text-blue-600 hover:text-blue-900 transition-colors">Edit</a>
-                                    <form action="{{ route('admin.news.destroy', $item) }}" method="POST" onsubmit="return confirm('Are you sure?')">
+                                    <form action="{{ route('admin.news.destroy', $item) }}" method="POST" onsubmit="return confirmAction('Are you sure you want to delete this news?', this)">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-red-600 hover:text-red-900 transition-colors">Delete</button>
@@ -353,7 +353,7 @@
 
                             <div class="flex items-center gap-3">
                                 <a href="{{ route('admin.news.edit', $item) }}" class="text-xs text-blue-600 hover:text-blue-900 font-medium">Edit</a>
-                                <form action="{{ route('admin.news.destroy', $item) }}" method="POST" onsubmit="return confirm('Are you sure?')">
+                                <form action="{{ route('admin.news.destroy', $item) }}" method="POST" onsubmit="return confirmAction('Are you sure you want to delete this news?', this)">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-xs text-red-600 hover:text-red-900 font-medium">Delete</button>

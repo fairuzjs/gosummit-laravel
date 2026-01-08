@@ -26,7 +26,7 @@
     </style>
     @stack('styles')
 </head>
-<body class="font-sans antialiased bg-gray-50" x-data="{ mobileMenuOpen: false, profileDropdownOpen: false }">
+<body class="font-sans antialiased bg-gray-50" x-data="{ profileDropdownOpen: false }">
     <div class="min-h-screen flex flex-col">
 
         <!-- Navbar Validator -->
@@ -124,41 +124,46 @@
                             </div>
                         </div>
 
-                        <!-- Mobile Menu Button -->
-                        <button @click="mobileMenuOpen = !mobileMenuOpen" 
-                                class="md:hidden text-white p-2 rounded-lg hover:bg-white/20 transition-colors">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
+                        <!-- Mobile/Hamburger Menu Button -->
+                        <div class="relative md:hidden" x-data="{ open: false }">
+                            <button @click="open = !open" 
+                                    class="inline-flex items-center px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl transition-all duration-200">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                                </svg>
+                                <span class="ml-2">Menu</span>
+                            </button>
 
-                <!-- Mobile Menu -->
-                <div x-show="mobileMenuOpen" 
-                     x-transition:enter="transition ease-out duration-200"
-                     x-transition:enter-start="opacity-0 transform -translate-y-2"
-                     x-transition:enter-end="opacity-100 transform translate-y-0"
-                     x-transition:leave="transition ease-in duration-150"
-                     x-transition:leave-start="opacity-100 transform translate-y-0"
-                     x-transition:leave-end="opacity-0 transform -translate-y-2"
-                     class="md:hidden pb-4 border-t border-white/20"
-                     style="display: none;">
-                    <div class="space-y-1 pt-2">
-                        <a href="{{ route('validator.bookings.index') }}" 
-                           class="flex items-center px-4 py-2 rounded-lg text-white hover:bg-white/20 {{ request()->routeIs('validator.bookings.index') ? 'bg-white/20 font-semibold' : '' }}">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                            </svg>
-                            Bookings
-                        </a>
-                        <a href="{{ route('validator.bookings.scanner') }}" 
-                           class="flex items-center px-4 py-2 rounded-lg text-white hover:bg-white/20 {{ request()->routeIs('validator.bookings.scanner') ? 'bg-white/20 font-semibold' : '' }}">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
-                            </svg>
-                            QR Scanner
-                        </a>
+                            <!-- Dropdown Menu -->
+                            <div x-show="open" 
+                                 @click.away="open = false"
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 scale-95"
+                                 x-transition:enter-end="opacity-100 scale-100"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="opacity-100 scale-100"
+                                 x-transition:leave-end="opacity-0 scale-95"
+                                 class="absolute right-0 mt-2 w-56 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5 z-50"
+                                 style="display: none;">
+                                <div class="py-2">
+                                    <a href="{{ route('validator.bookings.index') }}" 
+                                       class="flex items-center px-4 py-3 text-sm {{ request()->routeIs('validator.bookings.index') ? 'bg-gradient-to-r from-green-50 to-emerald-50 text-green-700 font-semibold' : 'text-gray-700 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50' }} transition-all duration-200">
+                                        <svg class="w-5 h-5 mr-3 {{ request()->routeIs('validator.bookings.index') ? 'text-green-600' : 'text-gray-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                        </svg>
+                                        Bookings
+                                    </a>
+                                    
+                                    <a href="{{ route('validator.bookings.scanner') }}" 
+                                       class="flex items-center px-4 py-3 text-sm {{ request()->routeIs('validator.bookings.scanner') ? 'bg-gradient-to-r from-green-50 to-emerald-50 text-green-700 font-semibold' : 'text-gray-700 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50' }} transition-all duration-200">
+                                        <svg class="w-5 h-5 mr-3 {{ request()->routeIs('validator.bookings.scanner') ? 'text-green-600' : 'text-gray-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+                                        </svg>
+                                        QR Scanner
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

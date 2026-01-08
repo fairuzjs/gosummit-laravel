@@ -153,8 +153,7 @@
             border: 2px solid #e5e7eb;
         }
         
-        .qr-box img,
-        .qr-box svg {
+        .qr-box img {
             display: block;
             width: 160px;
             height: 160px;
@@ -249,7 +248,7 @@
         <div class="ticket-header">
             <div class="logo-text">BOOKING SYSTEM</div>
             <div class="ticket-title">E-TICKET</div>
-            <div class="ticket-subtitle">Fairuz Trip Adventure</div>
+            <div class="ticket-subtitle">Go Summit</div>
         </div>
         
         <!-- Status -->
@@ -292,7 +291,16 @@
             <!-- QR Code -->
             <div class="qr-section">
                 <div class="qr-box">
-                    {!! QrCode::size(160)->margin(0)->generate($booking->booking_code) !!}
+                    @php
+                        // Force use GD backend instead of Imagick
+                        $renderer = new \BaconQrCode\Renderer\ImageRenderer(
+                            new \BaconQrCode\Renderer\RendererStyle\RendererStyle(160, 0),
+                            new \BaconQrCode\Renderer\Image\SvgImageBackEnd()
+                        );
+                        $writer = new \BaconQrCode\Writer($renderer);
+                        $qrCodeSvg = $writer->writeString($booking->booking_code);
+                    @endphp
+                    <img src="data:image/svg+xml;base64,{!! base64_encode($qrCodeSvg) !!}" alt="QR Code" style="width: 160px; height: 160px;">
                 </div>
                 <div class="qr-instruction">
                     <span class="qr-icon"></span>

@@ -46,6 +46,8 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        // Flash success message untuk register
+        return redirect(RouteServiceProvider::HOME)
+            ->with('register_success', "Welcome to GoSummit, {$user->name}! Your account has been created successfully.");
     }
 }

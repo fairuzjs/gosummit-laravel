@@ -98,7 +98,6 @@
                         <div class="relative h-64 overflow-hidden flex-shrink-0 cursor-pointer group/image" 
                              @click="showImageModal = true; modalImage = '{{ $mountain->image_url ? asset('storage/' . $mountain->image_url) : '' }}'; modalTitle = '{{ $mountain->name }}'; document.body.style.overflow = 'hidden';">
                             @if($mountain->image_url)
-                                {{-- PERBAIKAN: Menggunakan group-hover/image agar zoom hanya aktif saat hover gambar, bukan hover seluruh kartu --}}
                                 <img class="w-full h-full object-cover transform group-hover/image:scale-110 transition-transform duration-700" 
                                      src="{{ asset('storage/' . $mountain->image_url) }}" 
                                      alt="{{ $mountain->name }}">

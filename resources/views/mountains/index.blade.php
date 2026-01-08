@@ -7,7 +7,6 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
-    <!-- AOS Removed -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
     <style>
@@ -545,7 +544,7 @@
     </div>
     <div class="relative z-10 max-w-4xl mx-auto mt-10">
         <span class="inline-block py-1 px-3 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-bold tracking-widest uppercase mb-6">
-            {{ __('Danendra Fairuz') }}
+            {{ __('Early Access') }}
         </span>
         
         <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold text-white tracking-tight mb-6 leading-tight drop-shadow-lg">
@@ -621,6 +620,289 @@
         </div>
     </div>
 </section>
+
+<!-- New Year 2026 Event Popup Modal -->
+<div id="newYearPopup" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+    <!-- Backdrop Overlay -->
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeNewYearPopup()"></div>
+    
+    <!-- Modal Content -->
+    <div class="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300" id="popupContent">
+        <!-- Close Button -->
+        <button onclick="closeNewYearPopup()" class="absolute top-4 right-4 z-20 w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full text-white transition-all duration-300 hover:rotate-90 group">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        
+        <!-- Banner Card -->
+        <div class="relative rounded-3xl overflow-hidden shadow-2xl">
+            <!-- Background Gradient -->
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900"></div>
+            
+            <!-- Animated Background Elements -->
+            <div class="absolute inset-0 opacity-20">
+                <div class="absolute top-10 left-10 w-32 h-32 bg-yellow-400 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
+                <div class="absolute top-20 right-10 w-32 h-32 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
+                <div class="absolute bottom-10 left-1/2 w-32 h-32 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
+            </div>
+            
+            <!-- Sparkle/Star Elements -->
+            <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                <div class="absolute top-1/3 right-1/3 w-1 h-1 bg-yellow-300 rounded-full animate-ping"></div>
+                <div class="absolute bottom-1/4 right-1/4 w-2 h-2 bg-white rounded-full animate-pulse animation-delay-1000"></div>
+                <div class="absolute top-1/2 left-1/3 w-1 h-1 bg-purple-300 rounded-full animate-ping animation-delay-2000"></div>
+            </div>
+            
+            <!-- Content -->
+            <div class="relative z-10 py-8 px-6 md:py-12 md:px-10 text-center">
+                <!-- Event Badge -->
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 text-slate-900 font-bold text-xs md:text-sm uppercase tracking-wider mb-4 shadow-lg animate-bounce">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                    </svg>
+                    {{ __('Event Spesial Tahun Baru') }}
+                </div>
+                
+                <!-- Main Title -->
+                <h2 class="text-2xl md:text-4xl lg:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-yellow-200 to-white mb-3 leading-tight">
+                    NEW YEAR, NEW SUMMIT 2026
+                </h2>
+                
+                <!-- Subtitle -->
+                <p class="text-base md:text-lg text-white/90 mb-6 max-w-xl mx-auto font-medium">
+                    {{ __('Rayakan tahun baru dengan petualangan baru! Dapatkan diskon') }} 
+                    <span class="text-yellow-300 font-bold text-xl md:text-2xl">26%</span> 
+                    {{ __('untuk semua pemesanan di Januari 2026') }}
+                </p>
+                
+                <!-- Promo Code Badge -->
+                <div class="inline-block mb-6">
+                    <div class="relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
+                        <div class="relative px-5 py-2.5 bg-slate-900 rounded-lg">
+                            <div class="flex items-center gap-2">
+                                <span class="text-white/70 text-xs md:text-sm font-semibold">{{ __('Kode Promo:') }}</span>
+                                <span class="text-yellow-300 text-lg md:text-xl font-black tracking-wider" id="promoCodePopup">NEWYEAR2026</span>
+                                <button onclick="copyPromoCodePopup()" class="ml-1 p-1.5 hover:bg-white/10 rounded-lg transition-colors" title="Salin kode">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Countdown Timer -->
+                <div class="flex justify-center gap-2 md:gap-4 mb-6">
+                    <div class="bg-white/10 backdrop-blur-md rounded-xl p-2 md:p-3 min-w-[60px] md:min-w-[75px]">
+                        <div class="text-xl md:text-3xl font-black text-white" id="daysPopup">00</div>
+                        <div class="text-[10px] md:text-xs text-white/70 font-semibold uppercase">{{ __('Hari') }}</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-md rounded-xl p-2 md:p-3 min-w-[60px] md:min-w-[75px]">
+                        <div class="text-xl md:text-3xl font-black text-white" id="hoursPopup">00</div>
+                        <div class="text-[10px] md:text-xs text-white/70 font-semibold uppercase">{{ __('Jam') }}</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-md rounded-xl p-2 md:p-3 min-w-[60px] md:min-w-[75px]">
+                        <div class="text-xl md:text-3xl font-black text-white" id="minutesPopup">00</div>
+                        <div class="text-[10px] md:text-xs text-white/70 font-semibold uppercase">{{ __('Menit') }}</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-md rounded-xl p-2 md:p-3 min-w-[60px] md:min-w-[75px]">
+                        <div class="text-xl md:text-3xl font-black text-white" id="secondsPopup">00</div>
+                        <div class="text-[10px] md:text-xs text-white/70 font-semibold uppercase">{{ __('Detik') }}</div>
+                    </div>
+                </div>
+                
+                <!-- CTA Button -->
+                <div class="flex flex-col sm:flex-row justify-center gap-3">
+                    <a href="{{ route('mountains.list') }}" class="inline-flex items-center justify-center px-6 py-3 text-sm md:text-base font-bold text-slate-900 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full shadow-2xl hover:shadow-yellow-500/50 hover:scale-105 transform transition-all duration-300">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path>
+                        </svg>
+                        {{ __('Pesan Sekarang') }}
+                    </a>
+                    <button onclick="closeNewYearPopup()" class="inline-flex items-center justify-center px-6 py-3 text-sm md:text-base font-bold text-white bg-white/10 backdrop-blur-md border-2 border-white/30 rounded-full hover:bg-white/20 hover:scale-105 transform transition-all duration-300">
+                        {{ __('Lihat Destinasi') }}
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Terms -->
+                <p class="mt-4 text-[10px] md:text-xs text-white/60">
+                    {{ __('*Promo berlaku untuk semua pemesanan dari 1-31 Januari 2026. Syarat dan ketentuan berlaku.') }}
+                </p>
+                
+                <!-- Don't Show Again Button -->
+                <button onclick="dontShowAgain()" class="mt-3 text-xs text-white/50 hover:text-white/80 underline transition-colors duration-200">
+                    {{ __('Jangan tampilkan lagi selama 1 jam') }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes blob {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+    }
+    .animate-blob {
+        animation: blob 7s infinite;
+    }
+    .animation-delay-2000 {
+        animation-delay: 2s;
+    }
+    .animation-delay-4000 {
+        animation-delay: 4s;
+    }
+    .animation-delay-1000 {
+        animation-delay: 1s;
+    }
+    
+    /* Prevent body scroll when popup is open */
+    body.popup-open {
+        overflow: hidden;
+    }
+</style>
+
+<script>
+    // Countdown Timer for Popup
+    function updateCountdownPopup() {
+        const eventEnd = new Date('2026-01-31T23:59:59').getTime();
+        const now = new Date().getTime();
+        const distance = eventEnd - now;
+        
+        if (distance < 0) {
+            document.getElementById('daysPopup').textContent = '00';
+            document.getElementById('hoursPopup').textContent = '00';
+            document.getElementById('minutesPopup').textContent = '00';
+            document.getElementById('secondsPopup').textContent = '00';
+            return;
+        }
+        
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        document.getElementById('daysPopup').textContent = String(days).padStart(2, '0');
+        document.getElementById('hoursPopup').textContent = String(hours).padStart(2, '0');
+        document.getElementById('minutesPopup').textContent = String(minutes).padStart(2, '0');
+        document.getElementById('secondsPopup').textContent = String(seconds).padStart(2, '0');
+    }
+    
+    // Copy promo code function for popup
+    function copyPromoCodePopup() {
+        const promoCode = document.getElementById('promoCodePopup').textContent;
+        navigator.clipboard.writeText(promoCode).then(() => {
+            // Show success feedback
+            const button = event.currentTarget;
+            const originalHTML = button.innerHTML;
+            button.innerHTML = '<svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+            setTimeout(() => {
+                button.innerHTML = originalHTML;
+            }, 2000);
+        });
+    }
+    
+    // Show popup function
+    function showNewYearPopup() {
+        const popup = document.getElementById('newYearPopup');
+        const popupContent = document.getElementById('popupContent');
+        
+        popup.classList.remove('hidden');
+        document.body.classList.add('popup-open');
+        
+        // Trigger animation
+        setTimeout(() => {
+            popup.classList.remove('opacity-0');
+            popupContent.classList.remove('scale-95');
+            popupContent.classList.add('scale-100');
+        }, 10);
+        
+        // Start countdown
+        updateCountdownPopup();
+        setInterval(updateCountdownPopup, 1000);
+    }
+    
+    // Close popup function (does NOT save to localStorage)
+    function closeNewYearPopup() {
+        const popup = document.getElementById('newYearPopup');
+        const popupContent = document.getElementById('popupContent');
+        
+        // Animate out
+        popup.classList.add('opacity-0');
+        popupContent.classList.remove('scale-100');
+        popupContent.classList.add('scale-95');
+        
+        setTimeout(() => {
+            popup.classList.add('hidden');
+            document.body.classList.remove('popup-open');
+        }, 300);
+        
+        // DO NOT save to localStorage - popup will show again on refresh
+    }
+    
+    // Don't show again function (saves to localStorage for 1 hour)
+    function dontShowAgain() {
+        const popup = document.getElementById('newYearPopup');
+        const popupContent = document.getElementById('popupContent');
+        
+        // Animate out
+        popup.classList.add('opacity-0');
+        popupContent.classList.remove('scale-100');
+        popupContent.classList.add('scale-95');
+        
+        setTimeout(() => {
+            popup.classList.add('hidden');
+            document.body.classList.remove('popup-open');
+        }, 300);
+        
+        // Save to localStorage to not show again for 1 hour
+        const expiryTime = new Date().getTime() + (1 * 60 * 60 * 1000); // 1 hour
+        localStorage.setItem('newYearPopupDontShow', expiryTime);
+    }
+    
+    // Check if popup should be shown
+    function checkAndShowPopup() {
+        const dontShowTime = localStorage.getItem('newYearPopupDontShow');
+        const currentTime = new Date().getTime();
+        
+        // Check if event is still active (before Jan 31, 2026)
+        const eventEnd = new Date('2026-01-31T23:59:59').getTime();
+        if (currentTime > eventEnd) {
+            return; // Event has ended, don't show popup
+        }
+        
+        // Check if user clicked "Don't Show Again" and 1 hour hasn't passed
+        if (dontShowTime && currentTime < parseInt(dontShowTime)) {
+            return; // Don't show popup, user requested to hide it
+        }
+        
+        // Show popup (always show on refresh unless "Don't Show Again" was clicked)
+        setTimeout(() => {
+            showNewYearPopup();
+        }, 1000);
+    }
+    
+    // Run on page load
+    document.addEventListener('DOMContentLoaded', checkAndShowPopup);
+    
+    // Close popup on ESC key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            const popup = document.getElementById('newYearPopup');
+            if (!popup.classList.contains('hidden')) {
+                closeNewYearPopup();
+            }
+        }
+    });
+</script>
 
     <!-- Why Choose Us Section -->
 <section class="py-20 bg-white">
@@ -788,6 +1070,110 @@
 
         </div>
     </main>
+
+{{-- Leaderboard Widget Section --}}
+<section class="relative py-16 bg-gradient-to-b from-slate-50 to-white overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {{-- Section Header --}}
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 text-slate-900 font-bold text-xs uppercase tracking-wider mb-4 shadow-lg">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                </svg>
+                {{ __('Leaderboard') }}
+            </div>
+            <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-3">
+                {{ __('Hall of Fame - Pendaki Terbaik') }}
+            </h2>
+            <p class="text-slate-600 max-w-2xl mx-auto">
+                {{ __('Lihat pendaki terbaik yang telah menyelesaikan pendakian terbanyak sepanjang masa') }}
+            </p>
+        </div>
+
+        {{-- Leaderboard Cards --}}
+        <div class="grid gap-4 mb-8">
+            @forelse($topClimbers as $index => $climber)
+                <div class="group relative bg-white rounded-xl p-4 shadow-md hover:shadow-xl transition-all duration-300 border border-slate-100 hover:border-purple-200 {{ $index < 3 ? 'hover:scale-[1.02]' : '' }}">
+                    <div class="flex items-center gap-4">
+                        {{-- Rank Badge --}}
+                        <div class="flex-shrink-0">
+                            @if($index === 0)
+                                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-white font-black text-xl shadow-lg">
+                                    1
+                                </div>
+                            @elseif($index === 1)
+                                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-slate-300 to-slate-400 flex items-center justify-center text-white font-black text-xl shadow-lg">
+                                    2
+                                </div>
+                            @elseif($index === 2)
+                                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white font-black text-xl shadow-lg">
+                                    3
+                                </div>
+                            @else
+                                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center text-slate-700 font-bold text-xl">
+                                    {{ $index + 1 }}
+                                </div>
+                            @endif
+                        </div>
+
+                        {{-- User Info --}}
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-sm shadow-md">
+                                    {{ strtoupper(substr($climber->name, 0, 1)) }}
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <div class="font-bold text-slate-900 text-sm sm:text-base truncate">
+                                        {{ $climber->name }}
+                                    </div>
+                                    <div class="text-xs text-slate-500 truncate">
+                                        {{ $climber->masked_email ?? mask_email($climber->email) }}
+                                    </div>
+                                </div>
+                            </div>
+                            @if($index < 3)
+                                <div class="flex items-center gap-2 mt-2">
+                                    <span class="px-2 py-0.5 bg-yellow-100 text-yellow-700 text-xs font-semibold rounded-full">
+                                        {{ __('TOP') }} {{ $index + 1 }}
+                                    </span>
+                                </div>
+                            @endif
+                        </div>
+
+                        {{-- Stats --}}
+                        <div class="hidden md:block text-right">
+                            <div class="font-bold text-sm {{ $climber->userStatistic->total_spent === null ? 'text-gray-400 italic' : 'text-slate-900' }}">
+                                @if($climber->userStatistic->total_spent === null)
+                                    Private
+                                @else
+                                    Rp {{ number_format($climber->userStatistic->total_spent ?? 0, 0, ',', '.') }}
+                                @endif
+                            </div>
+                            <div class="text-xs text-slate-500">{{ __('Total Pengeluaran') }}</div>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="text-center py-12">
+                    <svg class="w-16 h-16 mx-auto mb-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                    </svg>
+                    <p class="text-slate-500 font-semibold">{{ __('Belum ada data leaderboard') }}</p>
+                    <p class="text-slate-400 text-sm mt-1">{{ __('Jadilah yang pertama!') }}</p>
+                </div>
+            @endforelse
+        </div>
+
+        {{-- View All Button --}}
+        <div class="text-center">
+            <a href="{{ route('leaderboard.index') }}" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+                {{ __('Lihat Leaderboard Lengkap') }}
+            </a>
+        </div>
+
+    </div>
+</section>
 
 <!-- FAQ Section - Redesigned -->
 <section class="py-20 bg-gradient-to-br from-slate-50 via-white to-purple-50 relative overflow-hidden">

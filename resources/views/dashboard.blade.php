@@ -636,5 +636,7 @@ main {
             }
         });
     </script>
+
+    <x-success-toast />
 </body>
 </html>

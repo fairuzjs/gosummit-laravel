@@ -21,8 +21,11 @@ class PageController extends Controller
                              ->take(6)
                              ->get();
         
-        // Kirim $mountains dan $totalMountains ke view (PERUBAHAN: compact ditambahkan)
-        return view('mountains.index', compact('mountains', 'totalMountains')); 
+        // 3. Ambil top 5 leaderboard sepanjang masa untuk widget
+        $topClimbers = app(\App\Services\LeaderboardService::class)->getAllTimeLeaderboard(5);
+        
+        // Kirim $mountains, $totalMountains, dan $topClimbers ke view
+        return view('mountains.index', compact('mountains', 'totalMountains', 'topClimbers')); 
     }
 
     /**

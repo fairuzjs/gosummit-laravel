@@ -39,6 +39,15 @@ Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 Route::get('/news/{slug}', [NewsController::class, 'show'])->name('news.show');
 
 
+// Leaderboard Page
+Route::get('/leaderboard', [App\Http\Controllers\LeaderboardController::class, 'index'])->name('leaderboard.index');
+Route::get('/leaderboard/data', [App\Http\Controllers\LeaderboardController::class, 'getData'])->name('leaderboard.data');
+Route::get('/leaderboard/user/{userId}', [App\Http\Controllers\LeaderboardController::class, 'getUserDetails'])->name('leaderboard.user.details');
+
+// Public User Profile
+Route::get('/profile/{userId}', [ProfileController::class, 'show'])->name('profile.show');
+
+
 // --- RUTE YANG MEMBUTUHKAN LOGIN ---
 Route::middleware('auth')->group(function () {
 
@@ -219,4 +228,3 @@ Route::post('/midtrans/webhook', [PaymentController::class, 'webhook'])->name('m
 require __DIR__.'/auth.php';
 require __DIR__.'/admin-auth.php';
 require __DIR__.'/validator-auth.php';
-

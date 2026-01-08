@@ -77,4 +77,11 @@ Route::middleware('auth')->group(function () {
     // Saved Members Routes
     Route::post('/profile/members', [ProfileController::class, 'storeMember'])->name('profile.members.store');
     Route::delete('/profile/members/{member}', [ProfileController::class, 'deleteMember'])->name('profile.members.destroy');
+
+    // Privacy Settings Route
+    Route::patch('/profile/privacy', [ProfileController::class, 'updatePrivacy'])->name('profile.privacy.update');
+    
+    // Photo Gallery Routes
+    Route::post('/profile/photos', [ProfileController::class, 'uploadPhoto'])->name('profile.photos.upload');
+    Route::delete('/profile/photos/{photo}', [ProfileController::class, 'deletePhoto'])->name('profile.photos.delete');
 });
