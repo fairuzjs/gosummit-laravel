@@ -35,6 +35,12 @@ GoSummit adalah sistem pemesanan tiket pendakian gunung berbasis web yang dibang
   - Notifikasi sistem
   - Riwayat pemesanan
   - Download E-Ticket (PDF)
+  - Sistem Leaderboard (Monthly & All-Time Rankings)
+  - User Statistics & Achievement Badges
+  - Privacy Settings untuk Leaderboard
+  - Public User Profiles dengan Timeline
+  - Photo Gallery dengan Upload & Lightbox
+  - Saved Members Management (Quick Booking)
 
 ### 🔧 Untuk Administrator
 - **Dashboard Analytics**
@@ -65,6 +71,95 @@ GoSummit adalah sistem pemesanan tiket pendakian gunung berbasis web yang dibang
   - Scan QR Code untuk verifikasi tiket
   - Update status kehadiran
   - Riwayat validasi
+
+## 🌟 Fitur Tambahan Unggulan
+
+### 🏆 Leaderboard System
+- **Monthly Leaderboard**
+  - Ranking pendaki berdasarkan jumlah pendakian selesai per bulan
+  - Auto-reset setiap bulan
+  - Real-time ranking updates
+  - User position indicator
+
+- **All-Time Leaderboard**
+  - Ranking lifetime berdasarkan total pendakian
+  - Historical achievement tracking
+  - Top climbers showcase
+  - Detailed user statistics
+
+- **Interactive Features**
+  - Click user untuk melihat detail profil
+  - Mountain history modal
+  - Privacy-aware data display
+  - Responsive leaderboard cards
+
+### 📊 User Statistics & Achievements
+- **Automatic Tracking**
+  - Total bookings counter
+  - Completed hikes tracker
+  - Cancelled bookings log
+  - Unique mountains climbed
+  - Total money spent
+  - Monthly statistics
+
+- **Achievement Badge System**
+  - 🌟 Pendaki Pemula (Beginner)
+  - 🔥 Pendaki Aktif (Active - 1+ bookings)
+  - ⚪ Pendaki Berpengalaman (Experienced - 5+ bookings / 3+ mountains)
+  - 🥈 Pendaki Profesional (Professional - 10+ bookings / 5+ mountains)
+  - 🟣 Pendaki Legendaris (Legendary - 20+ bookings / 10+ mountains)
+
+### 🔒 Privacy Controls
+- **Leaderboard Privacy Settings**
+  - Toggle email visibility (show/mask)
+  - Toggle total spent visibility
+  - Toggle mountain history visibility
+  - Per-user privacy preferences
+  - Applies to leaderboard & public profile
+
+### 👤 Public User Profiles
+- **Profile Information**
+  - User avatar with fallback initials
+  - Verified member badge
+  - Total bookings & completed stats
+  - Achievement badge display
+  - Financial statistics (if public)
+
+- **Photo Gallery**
+  - Upload hiking photos (max 5MB)
+  - Add captions & locations
+  - Lightbox viewer with smooth transitions
+  - Grid layout with hover effects
+  - Delete own photos
+
+- **Conquered Mountains Collection**
+  - Visual grid of climbed mountains
+  - Mountain details (name, location, elevation)
+  - Unique mountains counter
+  - Privacy-aware display
+
+- **Hiking Timeline**
+  - Chronological activity feed
+  - Mountain images & trail routes
+  - Status indicators (completed/checked-in)
+  - Date & booking details
+
+### 💾 Saved Members Management
+- **Quick Booking Feature**
+  - Save up to 5 member profiles
+  - Store name, ID number, phone
+  - Reuse data for faster bookings
+  - Edit & delete saved members
+  - Duplicate prevention
+
+### 🔔 Enhanced Notifications
+- **User-Specific Notification System**
+  - Per-user delete tracking
+  - Persistent notification state
+  - Individual notification dismissal
+  - Clear all notifications
+  - Admin broadcast capabilities
+
 
 ## 🛠️ Tech Stack
 
@@ -331,11 +426,22 @@ gosummit-laravel/
 │   │   ├── Controllers/
 │   │   │   ├── Admin/          # Admin controllers
 │   │   │   ├── Auth/           # Authentication controllers
-│   │   │   └── Validator/      # Validator controllers
+│   │   │   ├── Validator/      # Validator controllers
+│   │   │   ├── LeaderboardController.php
+│   │   │   └── ProfileController.php
 │   │   ├── Livewire/           # Livewire components
 │   │   └── Middleware/         # Custom middleware
 │   ├── Models/                 # Eloquent models
+│   │   ├── User.php
+│   │   ├── Booking.php
+│   │   ├── Mountain.php
+│   │   ├── UserStatistic.php   # User statistics tracking
+│   │   ├── UserPhoto.php       # User photo gallery
+│   │   ├── SavedMember.php     # Saved booking members
+│   │   └── ...
 │   └── Services/               # Business logic services
+│       ├── LeaderboardService.php
+│       └── WeatherService.php
 ├── database/
 │   ├── migrations/             # Database migrations
 │   ├── seeders/                # Database seeders
@@ -351,7 +457,82 @@ gosummit-laravel/
 └── public/                     # Public assets
 ```
 
-## 🔐 User Roles
+## �️ Database Schema
+
+### Tabel Utama
+
+#### `users`
+- Informasi pengguna dasar (name, email, password)
+- Role management (customer, admin, validator)
+- OAuth fields (google_id, facebook_id)
+- Profile fields (profile_picture, phone, address)
+- **Privacy settings** (`leaderboard_privacy` JSON field):
+  - `show_email`: boolean
+  - `show_total_spent`: boolean
+  - `show_mountain_history`: boolean
+
+#### `user_statistics`
+- `user_id`: Foreign key ke users
+- `total_bookings`: Total pemesanan
+- `completed_bookings`: Pemesanan selesai
+- `cancelled_bookings`: Pemesanan dibatalkan
+- `unique_mountains_climbed`: Jumlah gunung unik
+- `total_spent`: Total pengeluaran (decimal)
+- `monthly_bookings`: Pemesanan bulan ini
+- `monthly_completed`: Selesai bulan ini
+- `monthly_spent`: Pengeluaran bulan ini
+- `overall_rank`: Ranking all-time
+- `monthly_rank`: Ranking bulanan
+- `last_reset_date`: Tanggal reset terakhir
+
+#### `user_photos`
+- `user_id`: Foreign key ke users
+- `photo_path`: Path file foto
+- `caption`: Keterangan foto (nullable)
+- `location`: Lokasi foto (nullable)
+- `order`: Urutan tampilan
+
+#### `saved_members`
+- `user_id`: Foreign key ke users
+- `name`: Nama anggota
+- `id_number`: Nomor identitas (unique per user)
+- `phone`: Nomor telepon
+- Maximum 5 entries per user
+
+#### `bookings`
+- Informasi pemesanan lengkap
+- Status tracking (pending, paid, checked_in, completed, cancelled)
+- Payment integration (midtrans_order_id)
+- Trail route selection
+- Member details
+
+#### `mountains`
+- Informasi gunung (name, location, description)
+- Pricing & difficulty level
+- Image & height data
+- Status (active/inactive)
+
+#### `trail_routes`
+- Multiple routes per mountain
+- Route details & pricing
+- Status management
+
+#### `vouchers`
+- Discount codes & percentages
+- Usage limits & expiry dates
+- Active/inactive status
+
+#### `notifications`
+- System-wide notifications
+- Admin broadcast messages
+
+#### `user_notification_statuses`
+- Per-user notification tracking
+- Delete status per user
+- Persistent notification state
+
+
+## �🔐 User Roles
 
 ### 1. Customer (Default)
 - Melakukan pemesanan tiket
@@ -371,6 +552,68 @@ gosummit-laravel/
 - Validasi e-ticket dengan QR scanner
 - Update status kehadiran pendaki
 - Riwayat validasi
+
+## 🛣️ Key Routes & Endpoints
+
+### Public Routes
+```
+GET  /                          # Homepage
+GET  /mountains                 # Mountain listing with filters
+GET  /mountains/{mountain}      # Mountain detail page
+GET  /news                      # News & articles
+GET  /news/{slug}               # News detail
+GET  /leaderboard               # Leaderboard page (monthly/all-time)
+GET  /leaderboard/user/{id}     # User details modal (AJAX)
+GET  /profile/{userId}          # Public user profile
+```
+
+### Authenticated User Routes
+```
+GET  /dashboard                 # User dashboard
+GET  /bookings                  # Booking history
+GET  /payments                  # Payment history with filters
+GET  /bookings/{id}/pay         # Payment page
+GET  /bookings/{id}/invoice     # Download invoice PDF
+GET  /bookings/{id}/ticket      # Download e-ticket PDF
+
+# Profile Management
+PATCH /profile                  # Update profile info
+POST  /profile/members          # Add saved member
+DELETE /profile/members/{id}    # Delete saved member
+PATCH /profile/privacy          # Update privacy settings
+
+# Photo Gallery
+POST  /profile/photos           # Upload photo
+DELETE /profile/photos/{id}     # Delete photo
+
+# Notifications
+DELETE /notifications/{id}      # Delete single notification
+DELETE /notifications           # Clear all notifications
+```
+
+### Admin Routes (Prefix: `/admin`)
+```
+GET  /admin/analytics           # Analytics dashboard
+GET  /admin/mountains           # Mountain management
+GET  /admin/bookings            # Booking management
+GET  /admin/vouchers            # Voucher management
+GET  /admin/news                # News management
+POST /admin/notifications       # Broadcast notification
+```
+
+### Validator Routes (Prefix: `/validator`)
+```
+GET  /validator/bookings        # Recent bookings
+GET  /validator/scanner         # QR code scanner
+POST /validator/scan-check-in   # Process QR scan
+```
+
+### API Endpoints
+```
+GET  /leaderboard/data          # Leaderboard data (AJAX)
+POST /midtrans/webhook          # Payment webhook
+```
+
 
 ## 🌐 Multi-Language Support
 
@@ -454,6 +697,57 @@ Project ini dilisensikan under [MIT License](LICENSE).
 **Fairuz JS**
 - GitHub: [@fairuzjs](https://github.com/fairuzjs)
 - Repository: [gosummit-laravel](https://github.com/fairuzjs/gosummit-laravel)
+
+## ⭐ Feature Highlights
+
+### 🎯 Yang Membuat GoSummit Berbeda
+
+1. **🏆 Competitive Leaderboard System**
+   - Sistem ranking bulanan dan all-time yang mendorong engagement
+   - Privacy controls untuk melindungi data pengguna
+   - Interactive user profiles dengan detailed statistics
+
+2. **📊 Comprehensive Analytics**
+   - Real-time tracking untuk setiap booking
+   - Automatic achievement badge system
+   - Monthly statistics dengan auto-reset
+
+3. **🔒 Privacy-First Approach**
+   - Granular privacy controls per user
+   - Email masking untuk keamanan
+   - Optional data sharing di leaderboard
+
+4. **📸 Social Features**
+   - Photo gallery untuk berbagi pengalaman
+   - Public profiles dengan hiking timeline
+   - Mountain collection showcase
+
+5. **⚡ Enhanced User Experience**
+   - Saved members untuk quick booking
+   - Multi-language support (ID/EN)
+   - Real-time weather information
+   - Responsive design untuk semua device
+
+6. **💳 Seamless Payment Integration**
+   - Multiple payment methods via Midtrans
+   - Automatic e-ticket generation dengan QR code
+   - Invoice & ticket download
+
+7. **🎫 Smart Validation System**
+   - QR code scanner untuk validator
+   - Real-time check-in tracking
+   - Automatic statistics update
+
+## 📈 Project Statistics
+
+- **Total Models**: 14+ Eloquent models
+- **Database Tables**: 26+ migrations
+- **Controllers**: 15+ controllers
+- **Services**: 2 business logic services
+- **Views**: 80+ Blade templates
+- **Middleware**: Custom authentication & authorization
+- **API Integrations**: Midtrans, Google OAuth, Facebook OAuth, OpenWeatherMap
+
 
 ## 🙏 Acknowledgments
 
