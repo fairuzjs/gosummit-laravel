@@ -111,6 +111,7 @@ class LeaderboardController extends Controller
                 'user' => [
                     'name' => $user->name,
                     'email' => $email,
+                    'profile_picture' => $user->profile_picture,
                     'completed_bookings' => $user->userStatistic->completed_bookings ?? 0,
                     'total_spent' => $totalSpent,
                     'show_total_spent' => $user->shouldShowTotalSpent(),

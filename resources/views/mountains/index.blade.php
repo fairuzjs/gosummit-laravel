@@ -526,6 +526,27 @@
         .mountain-carousel .swiper-pagination-bullet-active {
             background: #7c3aed;
             width: 40px;
+            }
+        
+        /* Custom Scrollbar for Team Popup */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #a855f7 0%, #6366f1 100%);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #9333ea 0%, #4f46e5 100%);
+        }
+        /* Firefox */
+        .custom-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: #a855f7 #f1f5f9;
         }
     }
     </style>
@@ -559,7 +580,7 @@
         </p>
         
         <div class="flex flex-col sm:flex-row justify-center gap-4">
-            <a href="#mountains" class="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white bg-gradient-to-r from-purple-600 to-blue-600 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transform transition-all duration-200">
+            <a href="#mountains" class="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white bg-gradient-to-r from-purple-600 to-blue-600 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transform transition-all duration-200 max-w-xs mx-auto sm:mx-0">
                 {{ __('Mulai Mendaki') }}
             </a>
         </div>
@@ -667,7 +688,10 @@
                 
                 <!-- Main Title -->
                 <h2 class="text-2xl md:text-4xl lg:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-yellow-200 to-white mb-3 leading-tight">
-                    NEW YEAR, NEW SUMMIT 2026
+                    NEW YEAR
+                </h2>
+                <h2 class="text-2xl md:text-4xl lg:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-yellow-200 to-white mb-3 leading-tight">
+                    NEW SUMMIT
                 </h2>
                 
                 <!-- Subtitle -->
@@ -718,16 +742,10 @@
                 <!-- CTA Button -->
                 <div class="flex flex-col sm:flex-row justify-center gap-3">
                     <a href="{{ route('mountains.list') }}" class="inline-flex items-center justify-center px-6 py-3 text-sm md:text-base font-bold text-slate-900 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full shadow-2xl hover:shadow-yellow-500/50 hover:scale-105 transform transition-all duration-300">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path>
-                        </svg>
                         {{ __('Pesan Sekarang') }}
                     </a>
                     <button onclick="closeNewYearPopup()" class="inline-flex items-center justify-center px-6 py-3 text-sm md:text-base font-bold text-white bg-white/10 backdrop-blur-md border-2 border-white/30 rounded-full hover:bg-white/20 hover:scale-105 transform transition-all duration-300">
-                        {{ __('Lihat Destinasi') }}
-                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
+                        <a href="#mountains">{{ __('Lihat Destinasi') }}</a>
                     </button>
                 </div>
                 
@@ -1120,13 +1138,22 @@
                         {{-- User Info --}}
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center gap-2 mb-1">
-                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-sm shadow-md">
-                                    {{ strtoupper(substr($climber->name, 0, 1)) }}
-                                </div>
-                                <div class="min-w-0 flex-1">
-                                    <div class="font-bold text-slate-900 text-sm sm:text-base truncate">
-                                        {{ $climber->name }}
+                                {{-- Avatar with Profile Picture --}}
+                                @if($climber->profile_picture)
+                                    <img src="{{ asset('storage/' . $climber->profile_picture) }}" alt="{{ $climber->name }}" class="w-10 h-10 rounded-full object-cover shadow-md">
+                                @else
+                                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-sm shadow-md">
+                                        {{ strtoupper(substr($climber->name, 0, 1)) }}
                                     </div>
+                                @endif
+                                
+                                <div class="min-w-0 flex-1">
+                                    {{-- Username as Link --}}
+                                    <a href="{{ route('profile.show', $climber->id) }}" class="group/name inline-block">
+                                        <div class="font-bold text-slate-900 text-sm sm:text-base truncate group-hover/name:text-purple-600 transition-colors duration-200">
+                                            {{ $climber->name }}
+                                        </div>
+                                    </a>
                                     <div class="text-xs text-slate-500 truncate">
                                         {{ $climber->masked_email ?? mask_email($climber->email) }}
                                     </div>
@@ -1342,6 +1369,22 @@
     </div>
 </section>
 
+{{-- Floating Team Button --}}
+<div class="fixed bottom-6 right-6 z-40">
+    <button onclick="showTeamPopup()" class="group relative bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full p-4 shadow-2xl hover:shadow-purple-500/50 hover:scale-110 transition-all duration-300 flex items-center gap-3 overflow-hidden">
+        {{-- Animated Background --}}
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        
+        {{-- Icon --}}
+        <div class="relative z-10">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
+            </svg>
+        </div>
+        
+        <span class="absolute inset-0 rounded-full bg-purple-400 animate-ping opacity-20"></span>
+    </button>
+</div>
 
     <x-modern-footer />
 
@@ -1471,6 +1514,171 @@ function animateCounters(container) {
     });
 }
 });
+</script>
+
+{{-- Team Developer Popup --}}
+<div id="teamPopup" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm transition-opacity duration-300 opacity-0">
+    <div id="teamPopupContent" class="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl transform transition-all scale-95 overflow-hidden">
+        
+        {{-- Close Button --}}
+        <button onclick="closeTeamPopup()" class="absolute top-4 right-4 z-10 bg-slate-900/10 hover:bg-slate-900/20 text-slate-700 rounded-full p-2 transition-all backdrop-blur-sm">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+
+        {{-- Header --}}
+        <div class="relative h-24 bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 overflow-hidden">
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OSA0IDQgNCA0LTEuNzkgNC00em0wLTEwYzAtMi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHptMC0xMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-20"></div>
+            <div class="relative h-full flex flex-col items-center justify-center text-white">
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[10px] font-bold uppercase tracking-wider mb-1.5">
+                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
+                    </svg>
+                    {{ __('Meet Our Team') }}
+                </div>
+                <h2 class="text-xl md:text-2xl font-black">GoSummit Developer Team</h2>
+            </div>
+        </div>
+
+        {{-- Content --}}
+        <div class="p-4 md:p-5 max-h-[65vh] md:max-h-none overflow-y-auto md:overflow-visible custom-scrollbar">
+            
+            {{-- Team Grid --}}
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                
+                {{-- Developer 1 --}}
+                <div class="group bg-gradient-to-br from-slate-50 to-white rounded-2xl p-4 border border-slate-200 hover:border-purple-300 hover:shadow-lg transition-all duration-300">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="relative mb-3">
+                            <div class="w-20 h-20 rounded-full overflow-hidden shadow-lg ring-4 ring-purple-100 group-hover:scale-110 group-hover:ring-purple-300 transition-all duration-300">
+                                <img src="{{ asset('images/danendra.jpeg') }}" alt="Danendra Fairuz" class="w-full h-full object-cover">
+                            </div>
+                            <div class="absolute -bottom-1 -right-1 w-7 h-7 bg-green-500 rounded-full border-4 border-white flex items-center justify-center">
+                                <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-base mb-0.5">Danendra Fairuz</h3>
+                        <p class="text-xs text-purple-600 font-semibold mb-1">Full Stack Developer</p>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">15-2022-123</p>
+                    </div>
+                </div>
+
+                {{-- Developer 2 --}}
+                <div class="group bg-gradient-to-br from-slate-50 to-white rounded-2xl p-4 border border-slate-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="relative mb-3">
+                            <div class="w-20 h-20 rounded-full overflow-hidden shadow-lg ring-4 ring-blue-100 group-hover:scale-110 group-hover:ring-blue-300 transition-all duration-300">
+                                <img src="{{ asset('images/tbd.jpeg') }}" alt="Tubagus Radiator" class="w-full h-full object-cover">
+                            </div>
+                            <div class="absolute -bottom-1 -right-1 w-7 h-7 bg-green-500 rounded-full border-4 border-white flex items-center justify-center">
+                                <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-base mb-0.5">Tubagus Radiator</h3>
+                        <p class="text-xs text-blue-600 font-semibold mb-1">Backend Developer</p>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">15-2022-104</p>
+                    </div>
+                </div>
+
+                {{-- Developer 3 --}}
+                <div class="group bg-gradient-to-br from-slate-50 to-white rounded-2xl p-4 border border-slate-200 hover:border-orange-300 hover:shadow-lg transition-all duration-300">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="relative mb-3">
+                            <div class="w-20 h-20 rounded-full overflow-hidden shadow-lg ring-4 ring-orange-100 group-hover:scale-110 group-hover:ring-orange-300 transition-all duration-300">
+                                <img src="{{ asset('images/maul.jpg') }}" alt="Maul Kopling" class="w-full h-full object-cover">
+                            </div>
+                            <div class="absolute -bottom-1 -right-1 w-7 h-7 bg-green-500 rounded-full border-4 border-white flex items-center justify-center">
+                                <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-base mb-0.5">Maul Kopling</h3>
+                        <p class="text-xs text-orange-600 font-semibold mb-1">Frontend Developer</p>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">15-2015-162</p>
+                    </div>
+                </div>
+
+                {{-- Developer 4 --}}
+                <div class="group bg-gradient-to-br from-slate-50 to-white rounded-2xl p-4 border border-slate-200 hover:border-green-300 hover:shadow-lg transition-all duration-300">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="relative mb-3">
+                            <div class="w-20 h-20 rounded-full overflow-hidden shadow-lg ring-4 ring-green-100 group-hover:scale-110 group-hover:ring-green-300 transition-all duration-300">
+                                <img src="{{ asset('images/gaza.jpeg') }}" alt="Gaza Sawit" class="w-full h-full object-cover">
+                            </div>
+                            <div class="absolute -bottom-1 -right-1 w-7 h-7 bg-green-500 rounded-full border-4 border-white flex items-center justify-center">
+                                <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-base mb-0.5">Gaza Sawit</h3>
+                        <p class="text-xs text-green-600 font-semibold mb-1">API & Database Specialist</p>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">15-2024-071</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Show Team Popup
+    function showTeamPopup() {
+        const popup = document.getElementById('teamPopup');
+        const popupContent = document.getElementById('teamPopupContent');
+        
+        popup.classList.remove('hidden');
+        popup.classList.add('flex');
+        document.body.classList.add('popup-open');
+        
+        // Trigger animation
+        setTimeout(() => {
+            popup.classList.remove('opacity-0');
+            popupContent.classList.remove('scale-95');
+            popupContent.classList.add('scale-100');
+        }, 10);
+    }
+    
+    // Close Team Popup
+    function closeTeamPopup() {
+        const popup = document.getElementById('teamPopup');
+        const popupContent = document.getElementById('teamPopupContent');
+        
+        // Animate out
+        popup.classList.add('opacity-0');
+        popupContent.classList.remove('scale-100');
+        popupContent.classList.add('scale-95');
+        
+        setTimeout(() => {
+            popup.classList.remove('flex');
+            popup.classList.add('hidden');
+            document.body.classList.remove('popup-open');
+        }, 300);
+    }
+    
+    // Close on ESC key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            const popup = document.getElementById('teamPopup');
+            if (popup && !popup.classList.contains('hidden')) {
+                closeTeamPopup();
+            }
+        }
+    });
+    
+    // Close on backdrop click
+    document.getElementById('teamPopup')?.addEventListener('click', function(e) {
+        if (e.target === this) closeTeamPopup();
+    });
 </script>
 
 </body>

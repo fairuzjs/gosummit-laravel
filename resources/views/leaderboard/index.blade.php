@@ -106,9 +106,13 @@
                             
                             <div class="relative flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
                                 <div class="flex items-center gap-4 w-full sm:w-auto">
-                                    <div class="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow-lg ring-4 ring-white">
-                                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-                                    </div>
+                                    @if(auth()->user()->profile_picture)
+                                        <img src="{{ asset('storage/' . auth()->user()->profile_picture) }}" alt="{{ auth()->user()->name }}" class="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover shadow-lg ring-4 ring-white">
+                                    @else
+                                        <div class="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow-lg ring-4 ring-white">
+                                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                                        </div>
+                                    @endif
                                     <div class="min-w-0">
                                         <div class="font-bold text-slate-900 text-base sm:text-lg truncate">{{ auth()->user()->name }}</div>
                                         <div class="text-xs sm:text-sm font-medium text-purple-600 bg-purple-50 px-2 py-0.5 rounded-md inline-block mt-1">{{ __('Ranking Kamu Saat Ini') }}</div>
@@ -214,9 +218,13 @@
                             <!-- Avatar Ring -->
                             <div class="relative mb-2 sm:mb-4 mt-3 sm:mt-2">
                                 <div class="w-12 h-12 sm:w-20 sm:h-20 rounded-full rank-2 flex items-center justify-center p-1">
-                                    <div class="w-full h-full rounded-full bg-slate-100 flex items-center justify-center text-lg sm:text-2xl font-bold text-slate-500">
-                                        {{ strtoupper(substr($leaderboard[1]->name, 0, 1)) }}
-                                    </div>
+                                    @if($leaderboard[1]->profile_picture)
+                                        <img src="{{ asset('storage/' . $leaderboard[1]->profile_picture) }}" alt="{{ $leaderboard[1]->name }}" class="w-full h-full rounded-full object-cover">
+                                    @else
+                                        <div class="w-full h-full rounded-full bg-slate-100 flex items-center justify-center text-lg sm:text-2xl font-bold text-slate-500">
+                                            {{ strtoupper(substr($leaderboard[1]->name, 0, 1)) }}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="absolute -bottom-1 sm:-bottom-2 -right-1 sm:-right-2 w-5 h-5 sm:w-8 sm:h-8 bg-slate-300 rounded-full flex items-center justify-center text-slate-700 font-bold border-2 border-white shadow-md text-[10px] sm:text-base">2</div>
                             </div>
@@ -253,9 +261,13 @@
                             <!-- Avatar Ring -->
                             <div class="relative mb-4 sm:mb-6 mt-3 sm:mt-4">
                                 <div class="w-20 h-20 sm:w-28 sm:h-28 rounded-full rank-1 flex items-center justify-center p-1.5">
-                                    <div class="w-full h-full rounded-full bg-yellow-50 flex items-center justify-center text-2xl sm:text-4xl font-bold text-yellow-600">
-                                        {{ strtoupper(substr($leaderboard[0]->name, 0, 1)) }}
-                                    </div>
+                                    @if($leaderboard[0]->profile_picture)
+                                        <img src="{{ asset('storage/' . $leaderboard[0]->profile_picture) }}" alt="{{ $leaderboard[0]->name }}" class="w-full h-full rounded-full object-cover">
+                                    @else
+                                        <div class="w-full h-full rounded-full bg-yellow-50 flex items-center justify-center text-2xl sm:text-4xl font-bold text-yellow-600">
+                                            {{ strtoupper(substr($leaderboard[0]->name, 0, 1)) }}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="absolute -bottom-2 sm:-bottom-3 -right-1 sm:-right-2 w-8 h-8 sm:w-10 sm:h-10 bg-yellow-400 rounded-full flex items-center justify-center text-yellow-900 font-bold border-2 border-white shadow-md text-sm sm:text-lg">1</div>
                             </div>
@@ -292,9 +304,13 @@
                             <!-- Avatar Ring -->
                             <div class="relative mb-2 sm:mb-4 mt-3 sm:mt-2">
                                 <div class="w-12 h-12 sm:w-20 sm:h-20 rounded-full rank-3 flex items-center justify-center p-1">
-                                    <div class="w-full h-full rounded-full bg-orange-50 flex items-center justify-center text-lg sm:text-2xl font-bold text-orange-600">
-                                        {{ strtoupper(substr($leaderboard[2]->name, 0, 1)) }}
-                                    </div>
+                                    @if($leaderboard[2]->profile_picture)
+                                        <img src="{{ asset('storage/' . $leaderboard[2]->profile_picture) }}" alt="{{ $leaderboard[2]->name }}" class="w-full h-full rounded-full object-cover">
+                                    @else
+                                        <div class="w-full h-full rounded-full bg-orange-50 flex items-center justify-center text-lg sm:text-2xl font-bold text-orange-600">
+                                            {{ strtoupper(substr($leaderboard[2]->name, 0, 1)) }}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="absolute -bottom-1 sm:-bottom-2 -right-1 sm:-right-2 w-5 h-5 sm:w-8 sm:h-8 bg-orange-400 rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-md text-[10px] sm:text-base">3</div>
                             </div>
@@ -361,9 +377,13 @@
                                     <td class="px-6 py-4">
                                         <div class="flex items-center gap-4">
                                             <div class="relative">
-                                                <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-bold text-sm shadow-inner overflow-hidden">
-                                                    {{ strtoupper(substr($user->name, 0, 1)) }}
-                                                </div>
+                                                @if($user->profile_picture)
+                                                    <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="{{ $user->name }}" class="w-10 h-10 rounded-full object-cover shadow-inner">
+                                                @else
+                                                    <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-bold text-sm shadow-inner overflow-hidden">
+                                                        {{ strtoupper(substr($user->name, 0, 1)) }}
+                                                    </div>
+                                                @endif
                                             </div>
                                             <div class="min-w-0">
                                                 <div class="font-bold text-slate-900 text-sm flex items-center gap-2">
@@ -484,9 +504,13 @@
                         <div class="bg-gradient-to-r from-slate-800 to-slate-900 px-4 py-3 border-t border-slate-700 sticky bottom-0 z-20">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white font-bold text-xs">
-                                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-                                    </div>
+                                    @if(auth()->user()->profile_picture)
+                                        <img src="{{ asset('storage/' . auth()->user()->profile_picture) }}" alt="{{ auth()->user()->name }}" class="w-8 h-8 rounded-full object-cover">
+                                    @else
+                                        <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white font-bold text-xs">
+                                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                                        </div>
+                                    @endif
                                     <div>
                                         <div class="font-bold text-white text-sm">{{ __('Posisi Kamu') }}</div>
                                     </div>
@@ -536,7 +560,7 @@
                 </button>
                 <!-- Decorative Circle -->
                 <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-24 h-24 bg-white rounded-full flex items-center justify-center p-1.5 shadow-xl">
-                     <div id="userAvatar" class="w-full h-full rounded-full bg-slate-100 flex items-center justify-center text-slate-700 text-3xl font-bold">
+                     <div id="userAvatar" class="w-full h-full rounded-full bg-slate-100 flex items-center justify-center text-slate-700 text-3xl font-bold overflow-hidden">
                         <!-- JS fills this -->
                      </div>
                 </div>
@@ -546,8 +570,12 @@
             <div class="pt-14 pb-8 px-6">
                 {{-- User Info --}}
                 <div class="text-center mb-8">
-                    <h3 class="text-xl font-bold text-slate-900 mb-1" id="userName">Loading...</h3>
-                    <p class="text-sm text-slate-500" id="userEmail">...</p>
+                    <a id="userNameLink" href="#" class="group inline-block">
+                        <h3 class="text-xl font-bold text-slate-900 mb-1 group-hover:text-purple-600 transition-colors duration-200" id="userName">Loading...</h3>
+                        <div class="flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        </div>
+                    </a>
+                    <p class="text-sm text-slate-500 mt-1" id="userEmail">...</p>
                 </div>
 
                 <div id="modalLoading" class="text-center py-6">
@@ -596,18 +624,6 @@
                             <p class="text-sm text-slate-400">{{ __('Belum ada riwayat pendakian.') }}</p>
                         </div>
                     </div>
-                    
-                    {{-- View Full Profile Button --}}
-                    <div class="mt-6 pt-6 border-t border-slate-200">
-                        <a id="viewFullProfileBtn" href="#" class="block w-full text-center px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-                            <span class="flex items-center justify-center gap-2">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                </svg>
-                                {{ __('View Full Profile') }}
-                            </span>
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -640,22 +656,30 @@
                 })
                 .then(result => {
                     if (result.success) {
-                        document.getElementById('userAvatar').textContent = result.user.name.charAt(0).toUpperCase();
+                        const userAvatar = document.getElementById('userAvatar');
+                        if (result.user.profile_picture) {
+                            userAvatar.innerHTML = `<img src="/storage/${result.user.profile_picture}" alt="${result.user.name}" class="w-full h-full object-cover">`;
+                        } else {
+                            userAvatar.textContent = result.user.name.charAt(0).toUpperCase();
+                        }
                         document.getElementById('userName').textContent = result.user.name;
                         document.getElementById('userEmail').textContent = result.user.email;
                         document.getElementById('userCompleted').textContent = result.user.completed_bookings;
                         
                         // Check if viewing own profile
-                        const viewFullProfileBtn = document.getElementById('viewFullProfileBtn');
+                        const userNameLink = document.getElementById('userNameLink');
                         const currentUserId = {{ Auth::check() ? Auth::id() : 'null' }};
                         
                         if (currentUserId && userId == currentUserId) {
-                            // Hide button if viewing own profile
-                            viewFullProfileBtn.parentElement.classList.add('hidden');
+                            // Hide link if viewing own profile (make it non-clickable)
+                            userNameLink.href = '#';
+                            userNameLink.classList.add('pointer-events-none');
+                            userNameLink.querySelector('div').classList.add('hidden');
                         } else {
-                            // Show button and set link for other users
-                            viewFullProfileBtn.parentElement.classList.remove('hidden');
-                            viewFullProfileBtn.href = `/profile/${userId}`;
+                            // Show link and set href for other users
+                            userNameLink.href = `/profile/${userId}`;
+                            userNameLink.classList.remove('pointer-events-none');
+                            userNameLink.querySelector('div').classList.remove('hidden');
                         }
                         
                         // Check if total spent is visible

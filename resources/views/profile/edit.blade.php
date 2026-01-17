@@ -324,26 +324,6 @@
 </head>
 <body class="font-sans antialiased">
     <!-- Floating Notifications -->
-    <div x-data="{ 
-        show: {{ session('status') || session('success') || session('privacy_updated') || session('profile_updated') || session('member_added') || session('member_deleted') ? 'true' : 'false' }},
-        message: '{{ session('privacy_updated') ? __('Pengaturan privasi berhasil diperbarui') : (session('profile_updated') ? __('Profil berhasil diperbarui') : (session('status') === 'profile-updated' ? __('Profil berhasil diperbarui') : (session('status') === 'password-updated' ? __('Kata sandi berhasil diperbarui') : (session('member_added') ? __('Data anggota berhasil ditambahkan') : (session('member_deleted') ? __('Data anggota berhasil dihapus') : (session('success') ? session('success') : '')))))) }}',
-        init() {
-            if (this.show) {
-                setTimeout(() => {
-                    this.$el.classList.add('notification-exit');
-                    setTimeout(() => { this.show = false; }, 300);
-                }, 3000);
-            }
-        }
-    }" x-show="show" x-cloak class="floating-notification">
-        <div class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3">
-            <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <span class="font-semibold" x-text="message"></span>
-        </div>
-    </div>
-
     <div class="min-h-screen" x-data="{ 
         activeTab: 'overview',
         profileImage: null,
@@ -563,11 +543,6 @@
 
                                 <div class="mt-6 bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
                                     <div class="flex">
-                                        <div class="flex-shrink-0">
-                                            <svg class="h-5 w-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                            </svg>
-                                        </div>
                                         <div class="ml-3">
                                             <h3 class="text-sm font-medium text-blue-800">{{ __('Tips Keamanan') }}</h3>
                                             <div class="mt-2 text-sm text-blue-700">
@@ -852,7 +827,7 @@
                             </div>
                         </div>
 
-                        <!-- TAB DATA ANGGOTA (RESPONSIF YANG DIPERBAIKI) -->
+                        <!-- TAB DATA ANGGOTA -->
                         <div x-show="activeTab === 'members'" x-cloak>
                             <div class="card-modern">
                                 <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
@@ -1013,11 +988,6 @@
                                 <!-- Info Box -->
                                 <div class="mt-6 bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
                                     <div class="flex">
-                                        <div class="flex-shrink-0">
-                                            <svg class="h-5 w-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                            </svg>
-                                        </div>
                                         <div class="ml-3">
                                             <h3 class="text-sm font-medium text-blue-800">Informasi</h3>
                                             <div class="mt-2 text-sm text-blue-700">
@@ -1053,12 +1023,9 @@
                                     <div class="flex items-center justify-between py-4 border-b border-gray-200">
                                         <div class="flex-1 pr-4">
                                             <div class="flex items-center gap-3 mb-1">
-                                                <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                </svg>
                                                 <h4 class="font-semibold text-gray-900">{{ __('Tampilkan Total Pengeluaran') }}</h4>
                                             </div>
-                                            <p class="text-sm text-gray-500 ml-8">{{ __('Orang lain dapat melihat total pengeluaran Anda di leaderboard') }}</p>
+                                            <p class="text-sm text-gray-500 ml">{{ __('Orang lain dapat melihat total pengeluaran Anda di leaderboard') }}</p>
                                         </div>
                                         <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
                                             <input type="hidden" name="show_total_spent" value="0">
@@ -1076,12 +1043,9 @@
                                     <div class="flex items-center justify-between py-4 border-b border-gray-200">
                                         <div class="flex-1 pr-4">
                                             <div class="flex items-center gap-3 mb-1">
-                                                <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
-                                                </svg>
                                                 <h4 class="font-semibold text-gray-900">{{ __('Tampilkan Riwayat Gunung') }}</h4>
                                             </div>
-                                            <p class="text-sm text-gray-500 ml-8">{{ __('Orang lain dapat melihat gunung yang pernah Anda daki') }}</p>
+                                            <p class="text-sm text-gray-500 ml">{{ __('Orang lain dapat melihat gunung yang pernah Anda daki') }}</p>
                                         </div>
                                         <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
                                             <input type="hidden" name="show_mountain_history" value="0">
@@ -1098,12 +1062,9 @@
                                     <div class="flex items-center justify-between py-4">
                                         <div class="flex-1 pr-4">
                                             <div class="flex items-center gap-3 mb-1">
-                                                <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                                                </svg>
                                                 <h4 class="font-semibold text-gray-900">{{ __('Tampilkan Email Lengkap') }}</h4>
                                             </div>
-                                            <p class="text-sm text-gray-500 ml-8">{{ __('Tampilkan email lengkap tanpa sensor (default: disembunyikan)') }}</p>
+                                            <p class="text-sm text-gray-500 ml">{{ __('Tampilkan email lengkap tanpa sensor (default: disembunyikan)') }}</p>
                                         </div>
                                         <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
                                             <input type="hidden" name="show_email" value="0">
@@ -1121,9 +1082,6 @@
                                     <div class="mt-6 bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
                                         <div class="flex">
                                             <div class="flex-shrink-0">
-                                                <svg class="h-5 w-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                </svg>
                                             </div>
                                             <div class="ml-3">
                                                 <h3 class="text-sm font-medium text-blue-800">{{ __('Catatan Penting') }}</h3>
